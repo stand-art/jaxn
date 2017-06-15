@@ -41,6 +41,7 @@ begin-array     = ws %x5B ws  ; [ left square bracket
 begin-object    = ws %x7B ws  ; { left curly bracket
 end-array       = ws %x5D ws  ; ] right square bracket
 end-object      = ws %x7D ws  ; } right curly bracket
+string-concat   = ws %x2B ws  ; + plus
 name-separator  = ws %x3A ws  ; : colon
 value-separator = ws %x2C ws  ; , comma
 value-sep-opt   = [ value-separator ]
@@ -78,7 +79,9 @@ plus = %x2B                   ; +
 minus = %x2D                  ; -
 zero = %x30                   ; 0
 
-string = s-string / d-string
+string = string-part *( string-concat string-part )
+
+string-part = s-string / d-string / b-string
 
 d-string = d-quote *( s-char / s-quote ) d-quote
 s-string = s-quote *( s-char / d-quote ) s-quote
@@ -97,13 +100,22 @@ s-char = unescaped /
              %x76 /           ; v    vtab            U+000B
              %x75 4HEXDIG /   ; uXXXX                U+XXXX
              %x78 2HEXDIG /   ; xXX  byte value XX
-             %x30 )           ; 0    nul, byte value 0
+             %x30 )           ; 0    nul             U+0000
 
 escape = %x5C                 ; \
 d-quote = %x22                ; "
 s-quote = %x27                ; '
 
 unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
+
+b-string = dollar *b-value
+
+b-value = b-part *( dot b-part )
+
+b-part = *(2HEXDIG)
+
+dot = %2E                     ; .
+dollar = %x24                 ; $
 
 array = begin-array [ value *( value-separator value ) value-sep-opt ] end-array
 
