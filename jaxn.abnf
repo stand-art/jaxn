@@ -108,11 +108,13 @@ s-quote = %x27                ; '
 
 unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 
-b-string = dollar *b-value
+b-string = dollar [ b-value ]
 
 b-value = b-part *( dot b-part )
 
-b-part = *(2HEXDIG)
+b-part = 1*b-byte
+
+b-byte = 2HEXDIG
 
 dot = %2E                     ; .
 dollar = %x24                 ; $
