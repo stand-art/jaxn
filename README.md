@@ -103,12 +103,6 @@ Consequently, some of JAXN's extensions were inspired by, and are compatible wit
 * JSON5 does not allow string concatenation (although string concatenation is available in ES5).
 * JSON5 does not allow raw strings (TODO: work-in-progress/planned for JAXN).
 
-With the exception of the last three bullet points, this means every valid JAXN string is also valid JSON5. We would like to extend interoperability, namely by these points:
-
-* The goal should be that JAXN is, with the fewest exceptions possible, a sub-set of JSON5.
-* Would JSON5 allow string concatenation? (It is part of ES5, right?)
-* JSON5 currently does not allow raw strings. Can we come up with a common syntax?
-* Binary strings are currently the biggest issue. Any ideas?
-* We consider to extend identifiers to allow `$`, `-` and `.`. Are those valid for JSON5? The current JSON5 reference implementation does not allow `-` and `.`.
+With the exception of the last three bullet points, this means every valid JAXN string is also valid JSON5.
 
 Copyright (c) 2017 Daniel Frey and Dr. Colin Hirsch
