@@ -1,9 +1,7 @@
-;--------------------------------------------------------
 ; The JAXN grammar (http://github.com/stand-art/jaxn/)
-;
+
 ; Based on the JSON grammar, see RFC 7159.
 ; See RFC 5234 for interpretation and core rules.
-;--------------------------------------------------------
 
 eol = <end-of-line>           ; End-of-line
 eof = <end-of-file>           ; End-of-file
