@@ -20,7 +20,7 @@ Until we publish version 1.0 of JAXN, everything is work-in-progress. We appreci
 * C-style comments:
 
   * `// single-line comment`.
-  * `/* block comment */'.
+  * `/* block comment */`.
   * Block-comments can not to nested.
 
 * Unquoted C-style identifiers as object keys:
