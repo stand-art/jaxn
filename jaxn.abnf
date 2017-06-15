@@ -114,7 +114,7 @@ b-part = 1*b-byte
 
 b-byte = 2HEXDIG
 
-dot = %2E                     ; .
+dot = %x2E                    ; .
 dollar = %x24                 ; $
 
 array = begin-array [ value *( value-separator value ) value-sep-opt ] end-array
