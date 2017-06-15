@@ -6,7 +6,7 @@ JAXN (pronounced "Jackson") is a standard for relaxed [JSON](https://tools.ietf.
 
 **JAXN IS CURRENTLY WORK-IN-PROGRESS**
 
-Until we publish version 1.0 of JAXN, everything is work-in-progress. We appreciate ideas, feedback, criticsm and input from others, feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
+Until we publish version 1.0 of JAXN, everything is work-in-progress. We appreciate ideas, feedback, criticsm and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
 
 ## Goals
 
@@ -21,7 +21,7 @@ Until we publish version 1.0 of JAXN, everything is work-in-progress. We appreci
 
   * `// single-line comment`.
   * `/* block comment */`.
-  * Block-comments can not to nested.
+  * Block-comments can *not* be nested.
 
 * Unquoted C-style identifiers as object keys:
 
@@ -35,7 +35,7 @@ Until we publish version 1.0 of JAXN, everything is work-in-progress. We appreci
 
 * Strings:
 
-  * Allow single-quote strings: `'This is a "single-quote" string. No really, it is!'`.
+  * Allow single-quoted strings: `'This is a "single-quote" string. No really, it is!'`.
   * Additional escape sequences: `\'`, `\v`, `\0` and `\xXX`.
   * Allow concatenation of strings: `"Hello," + " world!"`.
   * TODO: Raw strings?
@@ -50,9 +50,9 @@ Until we publish version 1.0 of JAXN, everything is work-in-progress. We appreci
 * Binary strings:
 
   * Instead of escape sequences in a string, allow binary data directly, e.g. `$496E66696E697479`.
-  * Just like the empty string, `$` itself is a valid, but empty, binary literal.
+  * Just like the empty string, `$` itself is a valid, but empty, binary string.
   * Allow optional dots for readability, e.g. `$49.6E.66.69.6E.69.74.79`.
-  * Concatenation of binary string with each other and "normal" strings is allowed.
+  * Concatenation of binary strings with each other and "normal" strings is allowed.
 
 ## Discussion
 
@@ -74,7 +74,7 @@ Some extensions like additional escape sequences from other libraries were dropp
 
 ### Number values
 
-NaN and Infinity (as well as -Infinity) are well known, non-finite values from IEEE 759. Real-world use-cases often require to deal with those values and providing a clear way to handle those non-finite values improves interoperability. JAXN defines a fall-back path for libraries that can not handle those values internally, while encouraging library authors to accept NaN and Infinity as valid numeric values if possible.
+NaN and Infinity (as well as -Infinity) are well known, non-finite values from IEEE 754. Real-world use-cases often require to deal with those values and providing a clear way to handle those non-finite values improves interoperability. JAXN defines a fall-back path for libraries that can not handle those values internally, while encouraging library authors to accept NaN and Infinity as valid numeric values if possible.
 
 ### Binary strings
 
