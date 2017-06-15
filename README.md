@@ -10,10 +10,10 @@ Until we publish version 1.0 of JAXN, everything is work-in-progress. We appreci
 
 ## Goals
 
-* Add only a few, simple, human-readable and easy to understand extensions to JSON.
-* Remain a strict sub-set of JSON. Valid JSON is valid JAXN.
-* Agnostic towards the implementation language.
-* Allow for simple, one-pass parsers.
+* JAXN adds only a few, simple, human-readable and easy to understand extensions to JSON.
+* JAXN is a strict superset of JSON. Valid JSON is valid JAXN.
+* JAXN is agnostic towards the implementation language.
+* JAXN allow for simple, one-pass parsers.
 
 ## Extensions to JSON
 
