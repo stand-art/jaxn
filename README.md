@@ -58,7 +58,7 @@ Until we publish version 1.0 of JAXN, everything is considered work-in-progress.
 
 ### Comments
 
-A library that conforms to JAXN *must* ignore comments, they shall not be part of the data model (unlike, say, XML libraries where XML comments are often nodes in the resulting object). JAXN comments, when parsed, shall not be exposed to the user of the library or in any way influence the behaviour of the library. This ensures that the main concern why comments are not part of JSON is guaranteed for a JAXN-compatible library.
+A library that conforms to JAXN *must* ignore comments, they shall not be part of the data model (unlike, say, XML libraries where XML comments are often nodes in the resulting object). JAXN comments, when parsed, shall not be exposed to the user of the library or in any way influence the behaviour of the library. This improves interoperability and ensures that the main concern why comments are not part of JSON is taken care of.
 
 ### White-space
 
