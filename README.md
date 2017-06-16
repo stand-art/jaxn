@@ -2,11 +2,11 @@
 
 ## Introduction
 
-JAXN (pronounced "Jackson") is a standard for relaxed [JSON](https://tools.ietf.org/html/rfc7159). It targets humans writing JSON files manually (for example in configuration files), as well as providing a small set of extensions to improve the expressiveness and interoperability of JSON.
+JAXN (pronounced "Jackson") is a standard for "relaxed [JSON](https://tools.ietf.org/html/rfc7159)". It targets humans writing JSON files manually (for example in configuration files), as well as providing a small set of extensions to improve the expressiveness and interoperability of JSON.
 
 **JAXN IS CURRENTLY WORK-IN-PROGRESS**
 
-Until we publish version 1.0 of JAXN, everything is work-in-progress. We appreciate ideas, feedback, criticsm and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
+Until we publish version 1.0 of JAXN, everything is considered work-in-progress. We appreciate ideas, feedback, criticsm and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
 
 ## Goals
 
@@ -56,6 +56,10 @@ Until we publish version 1.0 of JAXN, everything is work-in-progress. We appreci
 
 ## Discussion
 
+### Comments
+
+A library that conforms to JAXN *must* ignore comments, they shall not be part of the data model (unlike, say, XML libraries where XML comments are often nodes in the resulting object). JAXN comments, when parsed, shall not be exposed to the user of the library or in any way influence the behaviour of the library. This ensures that the main concern why comments are not part of JSON is guaranteed for a JAXN-compatible library.
+
 ### White-space
 
 Other libraries sometimes allow additional white-space characters. We do not see a real-world use-case for those, as we believe they are often added by mistake and we do not support people making mistakes, we support features that provide additional value.
@@ -76,33 +80,41 @@ Some extensions like additional escape sequences from other libraries were dropp
 
 NaN and Infinity (as well as -Infinity) are well known, non-finite values from IEEE 754. Real-world use-cases often require to deal with those values and providing a clear way to handle those non-finite values improves interoperability. JAXN defines a fall-back path for libraries that can not handle those values internally, while encouraging library authors to accept NaN and Infinity as valid numeric values if possible.
 
+If possible, a JAXN-compatible library shall store those values as such. If, for some reason, the library/platform does not support IEEE 754, all non-finite values *must* be stored as one of three string values: "NaN", "Infinity", or "-Infinity", no other representation ("-NaN", "nan", "+Infinity", "Inf", etc.) is allowed. This rule improves interoperability between libraries. The user of the library is still free to replace values as appropriate for the business-logic.
+
 ### Binary strings
 
 As JAXN allows for strings to contain arbirary data, a more consise and reasonable representation is required. As we target humans reading and writing JAXN files, we have choosen a hexadecimal representation over, say, Base64 as humans are notoriously bad at reading and writing Base64.
 
 Implementations are encouraged to treat binary strings as a separate data type if possible. This increases interoperability with binary protocols like CBOR as well as providing a clear separation of readable strings from binary data. The latter is helpful when you are dumping data to, say, a log-file.
 
-If an implementaiton supports a binary data type, the concatenation of binary data mixed with strings shall produce binary data.
+If an implementaiton supports a binary data type, the concatenation of binary data mixed with strings produces binary data.
+
+## Libraries implementing JAXN
+
+* [taocpp/json](https://github.com/taocpp/json)
+* ...
 
 ## History
 
-We are the authors of a JSON library, [taocpp/json](https://github.com/taocpp/json), and users were asking for relaxed JSON features. Naturally, we first checked for existing standards and the most promising candidate we found was [JSON5](http://json5.org). After some discussion, we figured that it doesn't quite fit the bill. It's a very good starting point, but in some cases we felt that JSON5 went too far, while in other cases it was limited by its strict ES5 ties.
+As authors of a JSON library, users were asking for relaxed JSON features. Naturally, we first checked for existing standards and the most promising candidate we found was [JSON5](http://json5.org). After some discussion, we figured that it doesn't quite fit the bill. It's a very good starting point, but in some cases we felt that JSON5 went too far, while in other cases it was limited by its strict ES5 ties.
 
 Consequently, some of JAXN's extensions were inspired by, and are compatible with, JSON5. The following describes the differences between JSON5 and JAXN.
 
 * Comments are the same.
 * Handling of trailing commas is the same.
 * Numbers are the same.
+* JAXN does not allow:
 
-* JAXN does not allow additional white-space characters.
-* JAXN does not allow multi-line strings (aka escaped new-lines within strings).
-* JAXN does not allow escaping any character without special meaning.
-* JAXN does not allow `$` in identifiers (but this might change...).
+  * Additional white-space characters.
+  * `$` in identifiers (but this might change...).
+  * Escaping any character without special meaning.
+  * Multi-line strings (aka escaped new-lines within strings).
 
-* JSON5 does not allow binary strings.
-* JSON5 does not allow string concatenation (although string concatenation is available in ES5).
-* JSON5 does not allow raw strings (TODO: work-in-progress/planned for JAXN).
+* JSON5 does not allow:
 
-With the exception of the last three bullet points, this means every valid JAXN string is also valid JSON5.
+  * String concatenation (although string concatenation is available in ES5).
+  * Raw strings (TODO: work-in-progress/planned for JAXN).
+  * Binary strings.
 
 Copyright (c) 2017 Daniel Frey and Dr. Colin Hirsch
