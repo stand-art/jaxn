@@ -91,6 +91,7 @@ s-char = unescaped /
              %x27 /           ; '    single quote    U+0027
              %x5C /           ; \    reverse solidus U+005C
              %x2F /           ; /    solidus         U+002F
+             %x30 /           ; 0    nul             U+0000
              %x62 /           ; b    backspace       U+0008
              %x66 /           ; f    form feed       U+000C
              %x6E /           ; n    line feed       U+000A
@@ -98,7 +99,8 @@ s-char = unescaped /
              %x74 /           ; t    tab             U+0009
              %x76 /           ; v    vtab            U+000B
              %x75 4HEXDIG /   ; uXXXX                U+XXXX
-             %x30 )           ; 0    nul             U+0000
+             %x75 %x7B 1*HEXDIG %x7D )
+                              ; u{X...}              U+X...
 
 escape = %x5C                 ; \
 d-quote = %x22                ; "
@@ -121,14 +123,14 @@ b-char = b-unescaped /
              %x27 /           ; '    single quote    0x27
              %x5C /           ; \    reverse solidus 0x5C
              %x2F /           ; /    solidus         0x2F
+             %x30 /           ; 0    nul             0x00
              %x62 /           ; b    backspace       0x08
              %x66 /           ; f    form feed       0x0C
              %x6E /           ; n    line feed       0x0A
              %x72 /           ; r    carriage return 0x0D
              %x74 /           ; t    tab             0x09
              %x76 /           ; v    vtab            0x0B
-             %x78 2HEXDIG /   ; xXX                  0xXX
-             %x30 )           ; 0    nul             0x00
+             %x78 2HEXDIG )   ; xXX                  0xXX
 
 b-unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-7E
 
