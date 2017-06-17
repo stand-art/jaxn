@@ -6,7 +6,7 @@ JAXN (pronounced "Jackson") is a standard for "relaxed [JSON](https://tools.ietf
 
 **JAXN IS CURRENTLY WORK-IN-PROGRESS**
 
-Until we publish version 1.0 of JAXN, everything is considered work-in-progress. We appreciate ideas, feedback, criticsm and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
+Until we publish version 1.0 of JAXN, everything is considered work-in-progress. We appreciate ideas, feedback, criticism and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
 
 ## Goals
 
