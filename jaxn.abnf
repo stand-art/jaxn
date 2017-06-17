@@ -39,10 +39,11 @@ begin-array     = ws %x5B ws  ; [ left square bracket
 begin-object    = ws %x7B ws  ; { left curly bracket
 end-array       = ws %x5D ws  ; ] right square bracket
 end-object      = ws %x7D ws  ; } right curly bracket
-string-concat   = ws %x2B ws  ; + plus
 name-separator  = ws %x3A ws  ; : colon
 value-separator = ws %x2C ws  ; , comma
-value-sep-opt   = [ value-separator ]
+value-concat    = ws %x2B ws  ; + plus
+
+value-sep-opt = [ value-separator ]
 
 null  = %x6E.75.6C.6C         ; null
 true  = %x74.72.75.65         ; true
@@ -77,9 +78,9 @@ plus = %x2B                   ; +
 minus = %x2D                  ; -
 zero = %x30                   ; 0
 
-string = string-part *( string-concat string-part )
+string = string-part *( value-concat string-part )
 
-string-part = s-string / d-string / b-string
+string-part = d-string / s-string
 
 d-string = d-quote *( s-char / s-quote ) d-quote
 s-string = s-quote *( s-char / d-quote ) s-quote
@@ -97,7 +98,6 @@ s-char = unescaped /
              %x74 /           ; t    tab             U+0009
              %x76 /           ; v    vtab            U+000B
              %x75 4HEXDIG /   ; uXXXX                U+XXXX
-             %x78 2HEXDIG /   ; xXX  byte value XX
              %x30 )           ; 0    nul             U+0000
 
 escape = %x5C                 ; \
@@ -106,16 +106,40 @@ s-quote = %x27                ; '
 
 unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 
-b-string = dollar [ b-value ]
+binary = b-value *( value-concat b-value )
 
-b-value = b-part *( dot b-part )
+b-value = dollar [ b-string / b-direct ]
+
+b-string = b-s-string / b-d-string
+
+b-d-string = d-quote *( b-char / s-quote ) d-quote
+b-s-string = s-quote *( b-char / d-quote ) s-quote
+
+b-char = b-unescaped /
+         escape (
+             %x22 /           ; "    double quote    0x22
+             %x27 /           ; '    single quote    0x27
+             %x5C /           ; \    reverse solidus 0x5C
+             %x2F /           ; /    solidus         0x2F
+             %x62 /           ; b    backspace       0x08
+             %x66 /           ; f    form feed       0x0C
+             %x6E /           ; n    line feed       0x0A
+             %x72 /           ; r    carriage return 0x0D
+             %x74 /           ; t    tab             0x09
+             %x76 /           ; v    vtab            0x0B
+             %x78 2HEXDIG /   ; xXX                  0xXX
+             %x30 )           ; 0    nul             0x00
+
+b-unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-7E
+
+b-direct = b-part *( dot b-part )
 
 b-part = 1*b-byte
 
 b-byte = 2HEXDIG
 
-dot = %x2E                    ; .
 dollar = %x24                 ; $
+dot = %x2E                    ; .
 
 array = begin-array [ value *( value-separator value ) value-sep-opt ] end-array
 
@@ -130,6 +154,6 @@ identifier = i-begin *i-continue
 i-begin = ALPHA / %x5F
 i-continue = i-begin / DIGIT
 
-value = false / null / true / object / array / number / string
+value = false / null / true / object / array / number / string / binary
 
 JAXN-text = ws value ws
