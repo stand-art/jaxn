@@ -2,6 +2,10 @@
 
 JAXN (pronounced "Jackson") is a standard for "relaxed [JSON](https://tools.ietf.org/html/rfc7159)". It targets humans writing JSON files manually (for example in configuration files), as well as providing a small set of extensions to improve the expressiveness and interoperability of JSON libraries.
 
+> **JAXN IS CURRENTLY WORK-IN-PROGRESS**
+>
+> Until we publish version 1.0 of JAXN, everything is considered work-in-progress. We appreciate ideas, feedback, criticism and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
+
 ## What is JAXN?
 
 * A strict superset of JSON. Valid JSON is valid JAXN.
@@ -9,10 +13,6 @@ JAXN (pronounced "Jackson") is a standard for "relaxed [JSON](https://tools.ietf
 * Aims at wide-spread adoption from JSON libraries.
 * Agnostic towards the implementation language.
 * Allow for simple, one-pass parsers.
-
-> **JAXN IS CURRENTLY WORK-IN-PROGRESS**
->
-> Until we publish version 1.0 of JAXN, everything is considered work-in-progress. We appreciate ideas, feedback, criticism and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
 
 ## Extensions to JSON
 
