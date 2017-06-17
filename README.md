@@ -82,7 +82,7 @@ JAXN extends the JSON data model by two points:
 * Additional non-finite values for numeric values, i.e. `NaN`, `Infinity` and `-Infinity`.
 * Add a binary data type.
 
-### Numberic values
+### Numeric values
 
 NaN and Infinity (as well as -Infinity) are well known, non-finite values from IEEE 754. Real-world use-cases often require to deal with those values and providing a clear way to handle those non-finite values improves interoperability. A JAXN-compatible library is required to accept NaN and Infinity as valid numeric values for their internal data model.
 
