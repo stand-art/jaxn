@@ -1,19 +1,18 @@
-# Welcome to the home of JAXN
+# Welcome to JAXN
 
-## Introduction
+JAXN (pronounced "Jackson") is a standard for "relaxed [JSON](https://tools.ietf.org/html/rfc7159)". It targets humans writing JSON files manually (for example in configuration files), as well as providing a small set of extensions to improve the expressiveness and interoperability of JSON libraries.
 
-JAXN (pronounced "Jackson") is a standard for "relaxed [JSON](https://tools.ietf.org/html/rfc7159)". It targets humans writing JSON files manually (for example in configuration files), as well as providing a small set of extensions to improve the expressiveness and interoperability of JSON.
+## What is JAXN?
 
-**JAXN IS CURRENTLY WORK-IN-PROGRESS**
+* A strict superset of JSON. Valid JSON is valid JAXN.
+* Adds a few simple, human-readable and easy to understand extensions to JSON.
+* Aims at wide-spread adoption from JSON libraries.
+* Agnostic towards the implementation language.
+* Allow for simple, one-pass parsers.
 
-Until we publish version 1.0 of JAXN, everything is considered work-in-progress. We appreciate ideas, feedback, criticism and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
-
-## Goals
-
-* JAXN adds only a few, simple, human-readable and easy to understand extensions to JSON.
-* JAXN is a strict superset of JSON. Valid JSON is valid JAXN.
-* JAXN is agnostic towards the implementation language.
-* JAXN allow for simple, one-pass parsers.
+> **JAXN IS CURRENTLY WORK-IN-PROGRESS**
+>
+> Until we publish version 1.0 of JAXN, everything is considered work-in-progress. We appreciate ideas, feedback, criticism and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
 
 ## Extensions to JSON
 
@@ -64,23 +63,31 @@ A library that conforms to JAXN *must* ignore comments, they shall not be part o
 
 Other libraries sometimes allow additional white-space characters. We do not see a real-world use-case for those, as we believe they are often added by mistake and we do not support people making mistakes, we support features that provide additional value.
 
+### Data model extensions
+
+Most "relaxed JSON" extensions focus on the syntax of the string representation. They sometimes do extend the data model, but they don't say so clearly. JAXN goes further, by clearly specifying which additional values and data types a library could support and how such support should be implemented. This allows users to know what to expect from a JAXN-compatible library, or, looking at it from the other side, search for a JAXN-compatible library when they know that they need certain extensions to the data model.
+
+JAXN extends the JSON data model by three points:
+
+* Additional non-finite values for numeric values, i.e. `NaN`, `Infinity` and `-Infinity`.
+* Allow strings to contain arbitrary byte sequences.
+* Add a binary data type.
+
 ### Unicode
 
 Other libraries require Unicode support to implement certain extensions. While this seems reasonable if you are working with a programming language or environment where Unicode support is available, it places and additional burden on others, e.g. in the embedded world. JAXN does not require Unicode support on top of what is already required in JSON itself.
 
 ### String values
 
-String values in JSON are required to be valid Unicode strings in order to be interoperable. JSON explains in RFC 7159 paragraph 8.2 why this is the case. JAXN specifies clearly how an implementation may threat those cases in order to increase interoperability. (TODO: Describe it!)
+String values in JSON are required to be valid Unicode strings in order to be interoperable. The JSON RFC 7159 explains in paragraph 8.2 why this is the case.
 
-This extends the range of allowed values that a string can hold to basically a sequence of bytes where all byte values and combinations are allowed. This opens the door to handling of binary data, which is often required in real-world use-cases.
+JAXN extends the range of allowed values that a string can hold to basically any sequence of bytes where all byte values and combinations are allowed. This opens the door to handling of binary data, which is often required in real-world use-cases. This extension of the data model is a requirement for all JAXN-compatible libraries.
 
 Some extensions like additional escape sequences from other libraries were dropped in favor of simplity and in light of the one, truly needed and best scaling extension: Raw strings. (TODO: Describe raw strings).
 
 ### Number values
 
 NaN and Infinity (as well as -Infinity) are well known, non-finite values from IEEE 754. Real-world use-cases often require to deal with those values and providing a clear way to handle those non-finite values improves interoperability. JAXN defines a fall-back path for libraries that can not handle those values internally, while encouraging library authors to accept NaN and Infinity as valid numeric values if possible.
-
-If possible, a JAXN-compatible library shall store those values as such. If, for some reason, the library/platform does not support IEEE 754, all non-finite values *must* be stored as one of three string values: "NaN", "Infinity", or "-Infinity", no other representation ("-NaN", "nan", "+Infinity", "Inf", etc.) is allowed. This rule improves interoperability between libraries. The user of the library is still free to replace values as appropriate for the business-logic.
 
 ### Binary strings
 
