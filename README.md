@@ -10,7 +10,7 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 
 * A strict superset of JSON, every valid JSON document is also JAXN.
 * A syntactic extension to JSON that makes it more tractable for humans.
-* An extended JSON that addes often required features to the data model.
+* An extended JSON that adds often required features to the data model.
 * An extended JSON that improves the interoperability between libraries.
 * Simple to parse in a single pass without (much) look-ahead.
 * An implementation-language agnostic standard.
