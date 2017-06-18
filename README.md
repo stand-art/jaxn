@@ -1,67 +1,71 @@
 # Welcome to JAXN
 
-JAXN (pronounced "Jackson") is a standard for "relaxed [JSON](https://tools.ietf.org/html/rfc7159)". It targets humans writing JSON files manually (for example in configuration files), as well as providing a small set of extensions to improve the expressiveness and interoperability of JSON libraries.
+JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully extends [JSON](https://tools.ietf.org/html/rfc7159) with new syntax that it make more tractable for humans, and with some often-required features that make the data model more powerful.
 
 > **JAXN IS CURRENTLY WORK-IN-PROGRESS**
 >
-> Until we publish version 1.0 of JAXN, everything is considered work-in-progress. We appreciate ideas, feedback, criticism and input from others. Feel free to open an issue or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
+> Until version 1.0 of JAXN is published, everything is considered work-in-progress, and anything might still change. Ideas, feedback and other input is welcome and appreciated. Please feel free to open an issue, or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
 
 ## What is JAXN?
 
-* A strict superset of JSON. Valid JSON is valid JAXN.
-* Adds a few simple, human-readable and easy to understand extensions to JSON.
-* Aims at wide-spread adoption from JSON libraries.
-* Agnostic towards the implementation language.
-* Allow for simple, one-pass parsers.
+* A strict superset of JSON, every valid JSON document is also JAXN.
+* A syntactic extension to JSON that makes it more tractable for humans.
+* An extended JSON that addes often required features to the data model.
+* An extended JSON that improves the interoperability between libraries.
+* Simple to parse in a single pass without (much) look-ahead.
+* An implementation-language agnostic standard.
 
 ## Extensions to JSON
 
-* C-style comments:
+#### C and C++-Style Comments
 
-  * `// single-line comment`.
-  * `/* block comment */`.
+* `// single-line comment`
+* `/* block comment */`
   * Block-comments can *not* be nested.
 
-* Trailing comma in arrays and objects:
+#### Trailing Comma in Arrays and Objects
 
-  * Allow `[1,2,3,]` and `{ foo: "Hello", bar: 42, }`.
-  * But not `[,]`, `{,}`, `[,1,2]`, `[1,,2]`, etc.
+* Allow `[1,2,3,]` and `{ foo: "Hello", bar: 42, }`.
+  * **Not** `[,]`, `{,}`, `[,1,2]`, `[1,,2]`, or similar.
 
-* Numbers:
+#### Numbers
 
-  * Allow an explicit leading `+` sign.
-  * Allow omitting leading or tailing zeroes, e.g. `.5`, or `42.` are valid numbers.
-  * Add special values `NaN` and `Infinity`.
-  * Add hexadecimal integer values, e.g. `0xDEADBEEF`.
+* Allow leading `+` sign.
+* Allow omission of leading or tailing zeroes.
+  * E.g. `.5`, or `42.` are valid JAXN numbers.
+* Add special values `NaN` and `Infinity`.
+* Add hexadecimal integer values, e.g. `0xDEADBEEF`.
 
-* Strings:
+#### Strings
 
-  * Allow single-quoted strings: `'This is a "single-quote" string. No really, it is!'`.
-  * Additional escape sequences: `\'`, `\v`, `\0` and `\u{X...}`.
-  * `\u{X...}` is not allowed to encode surrogates.
-  * Allow concatenation of strings: `"Hello," + " world!"`.
-  * Each string fragment must be valid Unicode, i.e. surrogate pairs *must not* be splitted.
-  * TODO: Raw strings?
+* Allow single-quoted strings, e.g. `'This is a "single-quote" string. No really, it is!'`.
+* Add new escape sequences `\'`, `\v`, `\0` and `\u{X...}`.
+  * `\u{X...}` is not allowed to encode parts of a surrogate pair.
+* Allow concatenation of strings like `"Hello," + " world!"`.
+  * Each string fragment, and the string represented by the fragment, must be valid Unicode.
+    * In particular surrogate pairs *must not* span multiple fragments.
+* TODO: Raw strings, i.e. strings that can span multiple lines without interpretation of escape sequences.
 
-* Unquoted C-style identifiers as object keys:
+#### Object Keys
 
-  * `{ foo: "Hello", bar: 42 }`.
-  * TODO: Allow additional characters in identifiers? Candidates are `$`, `-` and `.`.
+* Unquoted C-style identifiers are allowed as object keys.
+  * For example `{ foo: "Hello", bar: 42 }`.
+  * TODO: Allow `$`, `-` and/or `.` in identifiers? Others?
 
-* Binary strings:
+#### Binary Data
 
-  * Binary strings are byte sequences, not Unicode strings.
-  * Prefixed by a dollar sign.
-  * Quoted binary strings, e.g. `$"Hello, world!"`.
-    * Single- or double-quoted.
-    * Only printable ASCII characters, no control characters.
-    * No `\uXXXX` or `\u{...}` escape sequences for Unicode code points.
-    * Add `\xXX` for escaped bytes.
-  * Direct binary strings, e.g. `$496E66696E697479`.
-    * Allow optional dots, e.g. `$49.6E.66.69.6E.69.74.79`.
-  * Just like the empty string, `$` itself is a valid, but empty, binary string.
-  * Allow concatenation of binary strings.
-  * Concatenation of normal and binary strings is not allowed.
+* Binary data represents arbitrary byte sequences, not Unicode strings.
+* Two syntactical variants that can be concatenated with each other.
+* Binary strings, e.g. `$"Hello, world!"`.
+  * Single- or double-quoted.
+  * Only printable ASCII characters allowed, no control characters.
+  * No `\uXXXX` or `\u{...}` escape sequences allowed, instead:
+  * Add `\xXX` for arbitrary byte values.
+* Hexdumped binary, e.g. `$496E66696E697479`.
+  * Allows optional dots, e.g. `$49.6E.66.69.6E.69.74.79`.
+    * Arbitrary mixed lengths of even-length sub-groups, e.g. `$30.020101.020101`.
+* The binary prefix `$` by itself is valid and represents an empty binary data.
+* Concatenation of regular strings and binary strings or binary data is not allowed.
 
 ## Discussion
 
