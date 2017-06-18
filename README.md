@@ -37,7 +37,8 @@ JAXN (pronounced "Jackson") is a standard for "relaxed [JSON](https://tools.ietf
 * Strings:
 
   * Allow single-quoted strings: `'This is a "single-quote" string. No really, it is!'`.
-  * Additional escape sequences: `\'`, `\v`, `\0` and `\u{...}`.
+  * Additional escape sequences: `\'`, `\v`, `\0` and `\u{X...}`.
+  * `\u{X...}` is not allowed to encode surrogates.
   * Allow concatenation of strings: `"Hello," + " world!"`.
   * Each string fragment must be valid Unicode, i.e. surrogate pairs *must not* be splitted.
   * TODO: Raw strings?
@@ -49,7 +50,6 @@ JAXN (pronounced "Jackson") is a standard for "relaxed [JSON](https://tools.ietf
 
 * Binary strings:
 
-  * Support for binary strings is optional!
   * Binary strings are byte sequences, not Unicode strings.
   * Prefixed by a dollar sign.
   * Quoted binary strings, e.g. `$"Hello, world!"`.
