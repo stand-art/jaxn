@@ -103,7 +103,7 @@ More precisely, in the context of JAXN we need to distinguish four "levels" of a
 1. The representation string as encoded in the JAXN text.
 2. The representation string as sequence of Unicode characters.
 3. The represented string as sequence of Unicode characters.
-4. The represented string as as encoded depending on the implementation.
+4. The represented string as encoded depending on the implementation.
 
 Regarding 1, JAXN allows only UTF-8, or also UTF-16 and UTF-32 encoding?
 
@@ -117,7 +117,7 @@ Regarding the step from 2 to 3, the sequence of represented Unicode code points 
 
 > (RFC 7159 specifies how to encode code points not in the BMP with a 12-character encoding consisting of two `\uXXXX` escape sequences using UTF-16 surrogate pairs, but does not mandate a specific behaviour when the merging of surrogates fails, noting only that it could be "unpredictable" including "fatal".)
 
-There appears to be an implicit silent consensus among JSON libraries to ignore unpaired surrogates. For now the JAXN standard allows unpaired surrogates. Therefore, at level 3, not all represented strings are actually valid sequences of unicode characters. (If the implementation uses UTF-8 as encoding, the final string encoding on level 4 can contain UTF-8 sequences for UTF-16 surrogate pairs.) A JAXN implementation MAY choose to forbid unpaired surrogates, a behaviour compatible with RFC 7159.
+There appears to be an implicit silent consensus among JSON libraries to ignore unpaired surrogates. For now the JAXN standard allows unpaired surrogates. Therefore, at level 3, not all represented strings are actually valid sequences of unicode characters. (If the implementation uses UTF-8 as encoding, the final string encoding on level 4 can contain UTF-8 sequences for UTF-16 surrogates.) A JAXN implementation MAY choose to forbid unpaired surrogates, a behaviour compatible with RFC 7159.
 
 JAXN string concatentation MUST be performed at level 3 or 4.
 
