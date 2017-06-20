@@ -40,10 +40,10 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 
 * Allow single-quoted strings, e.g. `'This is a "single-quote" string. No really, it is!'`.
 * Add new escape sequences `\'`, `\v`, `\0` and `\u{X...}`.
-  * `\u{X...}` is not allowed to encode parts of a surrogate pair.
+  * `\u{X...}` is not allowed to encode UTF-16 code units corresponding to surrogates.
 * Allow concatenation of strings like `"Hello," + " world!"`.
-  * Each string fragment, and the string represented by the fragment, must be valid Unicode.
-    * In particular surrogate pairs *must not* span multiple fragments.
+  * Each string (in a concatenation: individually) MUST be a sequence of Unicode characters.
+  * `\uXXXX` with UTF-16 surrogates MUST be handled before concatenation.
 * TODO: Raw strings, i.e. strings that can span multiple lines without interpretation of escape sequences.
 
 #### Object Keys
