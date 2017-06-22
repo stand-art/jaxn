@@ -1,6 +1,6 @@
 # Welcome to JAXN
 
-JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully extends [JSON](https://tools.ietf.org/html/rfc7159) with new syntax that makes it more tractable for humans, and with some often-required features that make the data model more powerful.
+JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully extends [JSON](https://tools.ietf.org/html/rfc7159) with new syntax that makes it more usable for humans, and with a few often-required additions to the data model.
 
 > **JAXN IS CURRENTLY WORK-IN-PROGRESS**
 >
