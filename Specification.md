@@ -1,8 +1,14 @@
 # Specification
 
-The following sections specify the extensions that JAXN defines on top of JSON in more detail.
+The following sections specify the extensions that JAXN defines on top of JSON in more detail:
 
-TODO: Add table of content
+* [C- and C++-Style Comments](#c-and-c-style-comments)
+* [Numbers](#numbers)
+* [Strings](#strings)
+* [Bare Object Keys](#bare-object-keys)
+* [Trailing Comma](#trailing-comma)
+* [Binary Data](#binary-data)
+* [ABNF for JAXN](#abnf-for-jaxn)
 
 ## C and C++-Style Comments
 
@@ -119,6 +125,10 @@ JAXN adds non-finite values to the data model that can not be represented in JSO
 
 ## Strings
 
+#### Synopsis
+
+Allow single-quoted strings, additional escape sequences and string concatenation to improve formatting options when writing JAXN files.
+
 #### Examples
 
 * `"Add \0 or \v, even \' is allowed in a string."`
@@ -167,7 +177,7 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 * `\u{X...}` MUST NOT encode surrogates.
 * Concatenation between single-quoted and double-quoted strings is allowed.
 
-## Object Keys
+## Bare Object Keys
 
 #### Synopsis
 
@@ -194,7 +204,7 @@ i-continue = i-begin / DIGIT
 
 While parsing, an object key always results in a string and therefore, no ambiguity with the JSON values `true`, `false` or `null` will happen. Also note that `string` in the above grammar does allow the extended strings from above with single-quote, enhanced escape-sequences and even concatenation. It is *not* allowed to concatenate a string with a bare object key.
 
-## Trailing Comma in Arrays and Objects
+## Trailing Comma
 
 #### Synopsis
 
@@ -215,7 +225,7 @@ array = begin-array [ value *( value-separator value ) value-sep-opt ] end-array
 object = begin-object [ member *( value-separator member ) value-sep-opt ] end-object
 ```
 
-(only showing the relevant differences agains RFC 7159)
+(only showing the relevant differences against RFC 7159)
 
 #### Semantics
 
@@ -238,9 +248,10 @@ The above grammar does not allow for consecutive commas (`[1,,2]`), a leading co
   * No `\uXXXX` or `\u{...}` escape sequences allowed, instead:
   * Add `\xXX` for arbitrary byte values.
 
-## Full Grammar
+## ABNF for JAXN
 
 The grammar for well-formed JAXN is based on and extends the ABNF grammar given in the JSON RFC 7159.
+
 It is also available as a separate [ABNF file](jaxn.abnf).
 
 ```abnf
