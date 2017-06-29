@@ -1,11 +1,11 @@
 # Specification
 
-The following sections specify the extensions that JAXN defines on top of JSON in more detail:
+The following sections specify the syntax and semantics of the extensions that JAXN brings to JSON.
 
-* [C- and C++-Style Comments](#c-and-c-style-comments)
+* [Comments](#c-and-c-style-comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
-* [Bare Object Keys](#bare-object-keys)
+* [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
 * [Binary Data](#binary-data)
 * [ABNF for JAXN](#abnf-for-jaxn)
@@ -14,7 +14,7 @@ The following sections specify the extensions that JAXN defines on top of JSON i
 
 #### Synopsis
 
-Allows C- and C++-style comments, single-line comments and block comments.
+Allows C- and C++-style comments, i.e. single-line and block comments.
 
 ### Single-line comments
 
@@ -38,7 +38,7 @@ Single-line comments **MUST** be ignored. They **MUST NOT** be forwarded by a JA
 
 #### Notes
 
-A single-line comment may not contain additional control characters. It ends at either the end of the line or at the end of the input, meaning a trailing single-line comment after the last value that is not terminated by a newline is valid JAXN.
+A single-line comment may not contain additional control characters. It ends at either the end of the line, or at the end of  input, whichever is encountered first.
 
 ### Block comments
 
@@ -69,13 +69,13 @@ Block comments **MUST** be ignored. They **MUST NOT** be forwarded by a JAXN par
 
 #### Notes
 
-Block comments may not be nested.
+Block comments do not nested. In other words, occurrences of `/*` within a block comment are not interpreted as anyhting else other than part of the comment.
 
 ## Numbers
 
 #### Synopsis
 
-Allow non-finite values, hexadecimal notation of integer values, optional leading plus sign, and relax the rules for meaningless zeroes.
+Allow non-finite values, hexadecimal notation of integer values, optional leading plus sign, and relax the rules for redundant zeroes.
 
 #### Examples
 
@@ -127,7 +127,7 @@ JAXN adds non-finite values to the data model that can not be represented in JSO
 
 #### Synopsis
 
-Allow single-quoted strings, additional escape sequences and string concatenation to improve formatting options when writing JAXN files.
+Allow single-quoted strings, additional escape sequences, and string concatenation.
 
 #### Examples
 
@@ -175,13 +175,13 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 * Each string (in a concatenation: individually) MUST be a sequence of Unicode characters.
 * `\uXXXX` with UTF-16 surrogates MUST be handled before concatenation.
 * `\u{X...}` MUST NOT encode surrogates.
-* Concatenation between single-quoted and double-quoted strings is allowed.
+* Concatenations can mix single- and double-quoted strings.
 
-## Bare Object Keys
+## Unquoted Object Keys
 
 #### Synopsis
 
-Allow C- and C++-style identifiers as bare object keys to simplify writing and enhance reading of JAXN input.
+Allow C- and C++-style identifiers as unquoted object keys.
 
 #### Example
 
@@ -202,13 +202,13 @@ i-continue = i-begin / DIGIT
 
 #### Notes
 
-While parsing, an object key always results in a string and therefore, no ambiguity with the JSON values `true`, `false` or `null` will happen. Also note that `string` in the above grammar does allow the extended strings from above with single-quote, enhanced escape-sequences and even concatenation. It is *not* allowed to concatenate a string with a bare object key.
+Object keys are strings, wherefore the tokens `true`, `null`, and `false` are unambiguous shortcuts for `"true"`, `"null"`, and `"false"` when used in an object key position. Strings in object key positions can use the extended syntax for strings including the single-quoted variant, additional escape sequences and string concatenation, however unquoted object keys can **not** be concatenated.
 
 ## Trailing Comma
 
 #### Synopsis
 
-Allow trailing commas in array and objects to simplify manual editing.
+Allow trailing commas in array and objects.
 
 #### Examples
 
@@ -229,11 +229,11 @@ object = begin-object [ member *( value-separator member ) value-sep-opt ] end-o
 
 #### Semantics
 
-The additional commas carry no sematic meaning.
+The additional commas have no semantics.
 
 #### Notes
 
-The above grammar does not allow for consecutive commas (`[1,,2]`), a leading comma (`[,1]`) or placing a comma in an empty array or object (`[,]`).
+The above grammar does not allow for consecutive commas (`[1,,2]`), a leading comma (`[,1]`), or placing a comma in an empty array or object (`[,]`).
 
 ## Binary Data
 
