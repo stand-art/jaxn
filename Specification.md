@@ -65,37 +65,6 @@ Block comments **MUST** be ignored. They **MUST NOT** be forwarded by a JAXN par
 
 Block comments may not be nested.
 
-## Trailing Comma in Arrays and Objects
-
-#### Synopsis
-
-Allow trailing commas in array and objects to simplify manual editing.
-
-#### Examples
-
-* `[1,2,3,]`
-* `{ foo: "Hello", bar: 42, }`
-
-#### Grammar
-
-```abnf
-value-sep-opt = [ value-separator ]
-
-array = begin-array [ value *( value-separator value ) value-sep-opt ] end-array
-
-object = begin-object [ member *( value-separator member ) value-sep-opt ] end-object
-```
-
-(only showing the relevant differences agains RFC 7159)
-
-#### Semantics
-
-The additional commas carry no sematic meaning.
-
-#### Notes
-
-The above grammar does not allow for consecutive commas (`[1,,2]`), a leading comma (`[,1]`) or placing a comma in an empty array or object (`[,]`).
-
 ## Numbers
 
 #### Synopsis
@@ -224,6 +193,37 @@ i-continue = i-begin / DIGIT
 #### Notes
 
 While parsing, an object key always results in a string and therefore, no ambiguity with the JSON values `true`, `false` or `null` will happen. Also note that `string` in the above grammar does allow the extended strings from above with single-quote, enhanced escape-sequences and even concatenation. It is *not* allowed to concatenate a string with a bare object key.
+
+## Trailing Comma in Arrays and Objects
+
+#### Synopsis
+
+Allow trailing commas in array and objects to simplify manual editing.
+
+#### Examples
+
+* `[ 1, 2, 3, ]`
+* `{ foo: "Hello", bar: 42, }`
+
+#### Grammar
+
+```abnf
+value-sep-opt = [ value-separator ]
+
+array = begin-array [ value *( value-separator value ) value-sep-opt ] end-array
+
+object = begin-object [ member *( value-separator member ) value-sep-opt ] end-object
+```
+
+(only showing the relevant differences agains RFC 7159)
+
+#### Semantics
+
+The additional commas carry no sematic meaning.
+
+#### Notes
+
+The above grammar does not allow for consecutive commas (`[1,,2]`), a leading comma (`[,1]`) or placing a comma in an empty array or object (`[,]`).
 
 ## Binary Data
 

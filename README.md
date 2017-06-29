@@ -22,10 +22,6 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 * `// single-line comment`
 * `/* block comment */`
 
-#### Trailing Comma in Arrays and Objects
-
-* Allow `[1,2,3,]` and `{ foo: "Hello", bar: 42, }`.
-
 #### Numbers
 
 * Allow leading `+` sign.
@@ -43,6 +39,10 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 #### Object Keys
 
 * Allow bare object keys, e.g. `{ foo: "Hello", bar: 42 }`.
+
+#### Trailing Comma in Arrays and Objects
+
+* Allow `[1,2,3,]` and `{ foo: "Hello", bar: 42, }`.
 
 #### Binary Data
 
