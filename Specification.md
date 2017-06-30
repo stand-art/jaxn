@@ -75,7 +75,7 @@ Block comments do not nested. In other words, occurrences of `/*` within a block
 
 #### Synopsis
 
-Allow non-finite values, hexadecimal notation of integer values, optional leading plus sign, and relax the rules for redundant zeroes.
+Allow non-finite values, hexadecimal notation of integer values, an optional leading plus sign, and relax the rules for redundant zeros.
 
 #### Examples
 
@@ -172,9 +172,9 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 
 #### Notes
 
-* Each string (in a concatenation: individually) MUST be a sequence of Unicode characters.
-* `\uXXXX` with UTF-16 surrogates MUST be handled before concatenation.
-* `\u{X...}` MUST NOT encode surrogates.
+* Each string (in a concatenation: individually) **MUST** be a sequence of Unicode characters.
+* `\uXXXX` with UTF-16 surrogates **MUST** be handled before concatenation.
+* `\u{X...}` **MUST NOT** encode surrogates.
 * Concatenations can mix single- and double-quoted strings.
 
 ## Unquoted Object Keys
@@ -208,7 +208,7 @@ Object keys are strings, wherefore the tokens `true`, `null`, and `false` are un
 
 #### Synopsis
 
-Allow trailing commas in array and objects.
+Allow trailing commas in arrays and objects.
 
 #### Examples
 
@@ -233,7 +233,7 @@ The additional commas have no semantics.
 
 #### Notes
 
-The above grammar does not allow for consecutive commas (`[1,,2]`), a leading comma (`[,1]`), or placing a comma in an empty array or object (`[,]`).
+The above grammar does not allow for adjacent commas (`[1,,2]`), a leading comma (`[,1]`), or placing a comma in an empty array or object (`[,]`).
 
 ## Binary Data
 

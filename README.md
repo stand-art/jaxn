@@ -24,9 +24,9 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 
 #### Numbers
 
-* Allow leading `+` sign.
-* Allow omission of leading or tailing zeroes, e.g. `.5`, or `42.`.
-* Add special values `NaN` and `Infinity`.
+* Allow a leading `+` sign.
+* Allow omission of leading or trailing zeros, e.g. `.5`, or `42.`.
+* Add non-finite values `NaN` and `Infinity`.
 * Add hexadecimal integer values, e.g. `0xDEADBEEF`.
 
 #### Strings
@@ -38,7 +38,7 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 
 #### Object Keys
 
-* Allow bare object keys, e.g. `{ foo: "Hello", bar: 42 }`.
+* Allow unquoted object keys, e.g. `{ foo: "Hello", bar: 42 }`.
 
 #### Trailing Comma in Arrays and Objects
 
@@ -57,8 +57,8 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 
 ## More information
 
-* More detailed [specification](Specification.md).
-* [Discussion](Discussion.md) of the design.
+* [Specification](Specification.md).
+* [Discussion](Discussion.md).
 
 ## Libraries implementing JAXN
 

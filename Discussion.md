@@ -2,7 +2,7 @@
 
 ## Data model extensions
 
-Most "relaxed JSON" extensions focus on the syntax of the string representation. They sometimes do extend the data model, but they don't say so clearly or are even unaware of it. JAXN goes further, by clearly specifying which additional values and data types a library could support and how such support should be implemented. This allows users to know what to expect from a JAXN-compatible library, or, looking at it from the other side, search for a JAXN-compatible library when they know that they need certain extensions to the data model.
+Most "relaxed JSON" extensions focus on the syntax of the string representation. They sometimes do extend the data model, but they don't say so clearly or are even unaware of it. JAXN goes further, by clearly specifying which additional values and data types a library should support. This allows users to know what to expect from a JAXN-compatible library, or, looking at it from the other side, search for a JAXN-compatible library when they know that they need these extensions to the data model.
 
 JAXN extends the JSON data model in two places.
 
@@ -11,15 +11,15 @@ JAXN extends the JSON data model in two places.
 
 ## White-space
 
-Other libraries sometimes allow additional white-space characters. We do not see a real-world use-case for those, as we believe they are often added by mistake and we do not support people making mistakes, we support features that provide additional value.
+Other libraries sometimes allow additional white-space characters. We do not see a real-world use-case for those, as we believe they are often added by mistake.
 
 ## Unicode
 
-Other libraries require Unicode support to implement certain extensions. While this seems reasonable if you are working with a programming language or environment where Unicode support is available, it places and additional burden on others, e.g. in the embedded world. JAXN does not require Unicode support beyond what is already required by JSON itself.
+Other libraries require additional Unicode support to implement certain extensions. While this seems reasonable if you are working with a programming language or environment where Unicode support is available, it places an additional burden on others, e.g. in the embedded world. JAXN does not require additional Unicode support beyond what is already required by JSON itself.
 
 ## Comments
 
-A library that conforms to JAXN *must* ignore comments, they shall not be part of the data model (unlike, say, XML libraries where XML comments are often nodes in the resulting object). JAXN comments, when parsed, shall not be exposed to the user of the library or in any way influence the behaviour of the library. This improves interoperability and ensures that the main concern why comments are not part of JSON is taken care of.
+A library that conforms to JAXN **MUST** ignore comments, they shall not be part of the data model (unlike, say, XML libraries where XML comments are often nodes in the resulting object). JAXN comments, when parsed, shall not be exposed to the user of the library or in any way influence the behaviour of the library. This improves interoperability and ensures that the main concern why comments are not part of JSON is taken care of.
 
 ## Numeric values
 
@@ -27,7 +27,7 @@ NaN and Infinity (as well as -Infinity) are well known, non-finite values from I
 
 ## String values
 
-String values in JSON are required to be valid Unicode strings in order to be interoperable. The JSON RFC 7159 explains in paragraph 8.2 why this is the case. JAXN does *not* change this. Unlike other libraries that allow escape sequences like `\xXX` for normal strings without specifying the semantics, we keep the data model for strings intact.
+String values in JSON are required to be valid Unicode strings in order to be interoperable. The JSON RFC 7159 explains in paragraph 8.2 why this is the case. JAXN does *not* change this. Unlike other libraries that allow escape sequences like `\xXX` for normal strings without specifying the semantics (properly), we keep the data model for strings intact.
 
 More precisely, in the context of JAXN we need to distinguish four "levels" of a string value.
 
