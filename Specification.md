@@ -197,7 +197,7 @@ key = string / identifier
 
 identifier = i-begin *i-continue
 
-i-begin = ALPHA / %x5F
+i-begin = ALPHA / %x24 / %x5F
 i-continue = i-begin / DIGIT
 ```
 
@@ -406,7 +406,7 @@ key = string / identifier
 
 identifier = i-begin *i-continue
 
-i-begin = ALPHA / %x5F
+i-begin = ALPHA / %x24 / %x5F
 i-continue = i-begin / DIGIT
 
 value = false / null / true / object / array / number / string / binary
