@@ -58,8 +58,8 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 
 ## More information
 
-* [Specification](Specification.md).
-* [Discussion](Discussion.md).
+* [Specification](Specification.md)
+* [Discussion](Discussion.md)
 
 ## Libraries implementing JAXN
 

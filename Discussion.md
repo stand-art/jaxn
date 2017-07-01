@@ -45,7 +45,9 @@ JAXN allows comments, however, they are a presentation detail and must not have 
 Michael Bolin writes:
 
 > Because JSON is more concise than XML, JSON is often a better format for data files that are maintained by hand. Examples include configuration files, as well as blobs of test data for web applications. For files such as these, it is convenient to be able to temporarily comment out bits of information (such as a configuration option, or an old test value in lieu of a new one). Further, if the file is to be maintained by humans, it is desirable to be able to include comments so that maintainers may communicate amongst one another without interfering with the data in the file.
+>
 > [...]
+>
 > This begs the question: why aren't comments officially supported in JSON? Interestingly, when Douglas Crockford originally introduced JSON, there was explicit support for C-style comments. He [later dropped support for them in the specification](http://tech.groups.yahoo.com/group/json/message/156), but also [declared that a JSON decoder that accepts comments should be considered a valid JSON decoder](http://tech.groups.yahoo.com/group/json/message/152).
 
 (Source: http://bolinfest.com/essays/json.html)
@@ -83,7 +85,9 @@ Quoting Michael Bolin:
 Again, Michael Bolin provides a good rationale for trailing commas:
 
 > Most modern browsers allow for a trailing comma in array and object literals in JavaScript. Although support for the trailing comma was not mandated until ES5, browsers such as Chrome and Firefox have supported it for a long time
+>
 > [...]
+>
 > Using the trailing comma is particularly convenient for developers who may modify the map in the course of development. As shown in the following example, commenting out the last entry in a map can inadvertently transform it into an object literal with a trailing comma:
 
 ```json
