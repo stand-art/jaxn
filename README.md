@@ -37,11 +37,11 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 * Allow concatenation of strings like `"Hello," + " world!"`.
 * TODO: Raw strings, i.e. strings that can span multiple lines without interpretation of escape sequences.
 
-#### Object Keys
+#### Unquoted Object Keys
 
 * Allow unquoted object keys, e.g. `{ foo: "Hello", bar: 42 }`.
 
-#### Trailing Comma in Arrays and Objects
+#### Trailing Comma
 
 * Allow `[1,2,3,]` and `{ foo: "Hello", bar: 42, }`.
 
