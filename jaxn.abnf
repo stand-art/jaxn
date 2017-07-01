@@ -13,20 +13,13 @@ c-line = c-begin-line *( c-char ) c-end-line
 c-begin-line = %x23 / %x2F.2F ; # or //
 c-end-line = eol / eof
 
-c-block = c-begin-block *( c-no-asterisk / ( c-asterisk c-no-slash ) ) c-end-block
+c-block = c-begin-block *( <!c-end-block> ( c-char / eol ) ) c-end-block
+                              ; ! is a PEG's "not at"-operator
 
 c-begin-block = %x2F.2A       ; /*
 c-end-block = %x2A.2F         ; */
 
 c-char = HTAB / %x20-10FFFF   ; Any HTAB or printable character
-
-c-asterisk = %x2A             ; * asterisk
-
-c-no-asterisk = eol / HTAB / %x20-29 / %x2B-10FFFF
-                              ; Any eol, HTAB or printable character except *
-
-c-no-slash = eol / HTAB / %x20-2E / %x30-10FFFF
-                              ; Any eol, HTAB or printable character except /
 
 ws = *(
           SP /                ; Space

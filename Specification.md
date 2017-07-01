@@ -29,8 +29,9 @@ Allows single-line and block comments.
 c-line = c-begin-line *( c-char ) c-end-line
 
 c-begin-line = %x23 / %x2F.2F ; # or //
-c-char = HTAB / %x20-10FFFF   ; Any HTAB or printable character
 c-end-line = eol / eof
+
+c-char = HTAB / %x20-10FFFF   ; Any HTAB or printable character
 ```
 
 #### Semantics
@@ -50,18 +51,11 @@ A single-line comment may not contain additional control characters. It ends at 
 #### Grammar
 
 ```abnf
-c-block = c-begin-block *( c-no-asterisk / ( c-asterisk c-no-slash ) ) c-end-block
+c-block = c-begin-block *( <!c-end-block> ( c-char / eol ) ) c-end-block
+                              ; ! is a PEG's "not at"-operator
 
 c-begin-block = %x2F.2A       ; /*
 c-end-block = %x2A.2F         ; */
-
-c-asterisk = %x2A             ; * asterisk
-
-c-no-asterisk = eol / HTAB / %x20-29 / %x2B-10FFFF
-                              ; Any eol, HTAB or printable character except *
-
-c-no-slash = eol / HTAB / %x20-2E / %x30-10FFFF
-                              ; Any eol, HTAB or printable character except /
 ```
 
 #### Semantics
@@ -71,6 +65,7 @@ Block comments **MUST** be ignored. They **MUST NOT** be forwarded by a JAXN par
 #### Notes
 
 Block comments do not nested. In other words, occurrences of `/*` within a block comment are not interpreted as anyhting else other than part of the comment.
+For simplicity, the grammar description uses the ! ("not at") operator from a PEG grammar in an ABNF prose-val element.
 
 ## Numbers
 
@@ -266,20 +261,13 @@ c-line = c-begin-line *( c-char ) c-end-line
 c-begin-line = %x23 / %x2F.2F ; # or //
 c-end-line = eol / eof
 
-c-block = c-begin-block *( c-no-asterisk / ( c-asterisk c-no-slash ) ) c-end-block
+c-block = c-begin-block *( <!c-end-block> ( c-char / eol ) ) c-end-block
+                              ; ! is a PEG's "not at"-operator
 
 c-begin-block = %x2F.2A       ; /*
 c-end-block = %x2A.2F         ; */
 
 c-char = HTAB / %x20-10FFFF   ; Any HTAB or printable character
-
-c-asterisk = %x2A             ; * asterisk
-
-c-no-asterisk = eol / HTAB / %x20-29 / %x2B-10FFFF
-                              ; Any eol, HTAB or printable character except *
-
-c-no-slash = eol / HTAB / %x20-2E / %x30-10FFFF
-                              ; Any eol, HTAB or printable character except /
 
 ws = *(
           SP /                ; Space
