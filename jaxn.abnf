@@ -10,7 +10,7 @@ comment = c-line / c-block
 
 c-line = c-begin-line *( c-char ) c-end-line
 
-c-begin-line = %x2F.2F        ; //
+c-begin-line = %x23 / %x2F.2F ; # or //
 c-end-line = eol / eof
 
 c-block = c-begin-block *( c-no-asterisk / ( c-asterisk c-no-slash ) ) c-end-block

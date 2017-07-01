@@ -17,8 +17,9 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 
 ## Extensions to JSON
 
-#### C and C++-Style Comments
+#### Comments
 
+* `# single-line comment`
 * `// single-line comment`
 * `/* block comment */`
 

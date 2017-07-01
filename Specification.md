@@ -2,7 +2,7 @@
 
 The following sections specify the syntax and semantics of the extensions that JAXN brings to JSON.
 
-* [Comments](#c-and-c-style-comments)
+* [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
 * [Unquoted Object Keys](#unquoted-object-keys)
@@ -10,24 +10,25 @@ The following sections specify the syntax and semantics of the extensions that J
 * [Binary Data](#binary-data)
 * [ABNF for JAXN](#abnf-for-jaxn)
 
-## C and C++-Style Comments
+## Comments
 
 #### Synopsis
 
-Allows C- and C++-style comments, i.e. single-line and block comments.
+Allows single-line and block comments.
 
 ### Single-line comments
 
-#### Example
+#### Examples
 
-`// single-line comment`
+* `# single-line comment`
+* `// single-line comment`
 
 #### Grammar
 
 ```abnf
 c-line = c-begin-line *( c-char ) c-end-line
 
-c-begin-line = %x2F.2F        ; //
+c-begin-line = %x23 / %x2F.2F ; # or //
 c-char = HTAB / %x20-10FFFF   ; Any HTAB or printable character
 c-end-line = eol / eof
 ```
@@ -181,7 +182,7 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 
 #### Synopsis
 
-Allow C- and C++-style identifiers as unquoted object keys.
+Allow identifiers as unquoted object keys.
 
 #### Example
 
@@ -262,7 +263,7 @@ comment = c-line / c-block
 
 c-line = c-begin-line *( c-char ) c-end-line
 
-c-begin-line = %x2F.2F        ; //
+c-begin-line = %x23 / %x2F.2F ; # or //
 c-end-line = eol / eof
 
 c-block = c-begin-block *( c-no-asterisk / ( c-asterisk c-no-slash ) ) c-end-block
