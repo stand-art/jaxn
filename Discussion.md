@@ -52,6 +52,8 @@ Michael Bolin writes:
 
 (Source: http://bolinfest.com/essays/json.html)
 
+Note that comments sometimes don't interact nicely with strings. If you try to comment out a parts of a document that contains strings, and if those strings contain the character sequence `*/`, using a block comment will fail. This problem of block comments existed long before JAXN. As JSON already allows escaping the slash with a backslash in strings, you might consider converting `*/` into `*\/` within the string in question, you will than be able to comment the string out (and in again) without problems.
+
 ## Numbers
 
 JAXN allows non-finite floating point values. NaN and Infinity (as well as -Infinity) are well known, non-finite values from IEEE 754. Real-world use-cases often require to deal with those values and providing a clear way to handle those non-finite values improves interoperability. A JAXN-compatible library is required to accept NaN and Infinity as valid numeric values for their internal data model.
