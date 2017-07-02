@@ -5,6 +5,7 @@ The following sections discuss the syntax and semantics of the extensions that J
 * [Data-Model](#data-model)
 * [White-Space](#white-space)
 * [Unicode](#unicode)
+* [Source Character Set](#source-character-set)
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
@@ -38,6 +39,10 @@ A JAXN parser is...
 * ...allowed to accept other encodings, provided that they are correctly identifier (no guessing!) and unambiguously mapped to a sequence of Unicode code points.
 * ...required to emit an error if the input is not correctly encoded.
 
+## Source Character Set
+
+The input is properly encoded Unicode characters, the source character set consists of HTAB (0x09), end-of-line characters (0x0A, 0x0D), and all characters from space upwards (0x20-0x10FFFF). JSON allows 0x7F, although it is a control character. JAXN stays compatible with JSON, so it has to allow it as well.
+
 ## Comments
 
 JAXN allows comments, however, they are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated. In particular, comments are not associated with a particular node. This improves interoperability and ensures that the main concern why comments are not part of JSON is taken care of. The usual purpose of a comment is to communicate between the human maintainers of a file. A typical example is comments in a configuration file.
@@ -53,6 +58,8 @@ Michael Bolin writes:
 (Source: http://bolinfest.com/essays/json.html)
 
 Note that comments sometimes don't interact nicely with strings. If you try to comment out a parts of a document that contains strings, and if those strings contain the character sequence `*/`, using a block comment will fail. This problem of block comments existed long before JAXN. As JSON already allows escaping the slash with a backslash in strings, you might consider converting `*/` into `*\/` within the string in question, you will than be able to comment the string out (and in again) without problems.
+
+The restrictions on the source character set also apply within comments.
 
 ## Numbers
 
