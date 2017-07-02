@@ -16,12 +16,17 @@ The following sections specify the syntax and semantics of the extensions that J
 
 Allows single-line and block comments.
 
-### Single-line comments
-
 #### Examples
 
 * `# single-line comment`
 * `// single-line comment`
+* `/* block comment */`
+
+#### Semantics
+
+Comments are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
+
+### Single-line comments
 
 #### Grammar
 
@@ -34,19 +39,11 @@ c-end-line = eol / eof
 c-char = HTAB / %x20-10FFFF   ; Any HTAB or printable character
 ```
 
-#### Semantics
-
-Single-line comments **MUST** be ignored. They **MUST NOT** be forwarded by a JAXN parser to the caller. They **MUST NOT** modify the sematics of the parsed JAXN document.
-
 #### Notes
 
 A single-line comment may not contain additional control characters. It ends at either the end of the line, or at the end of  input, whichever is encountered first.
 
 ### Block comments
-
-#### Example
-
-`/* block comment */`
 
 #### Grammar
 
@@ -57,10 +54,6 @@ c-block = c-begin-block *( <!c-end-block> ( c-char / eol ) ) c-end-block
 c-begin-block = %x2F.2A       ; /*
 c-end-block = %x2A.2F         ; */
 ```
-
-#### Semantics
-
-Block comments **MUST** be ignored. They **MUST NOT** be forwarded by a JAXN parser to the caller. They **MUST NOT** modify the sematics of the parsed JAXN document.
 
 #### Notes
 
@@ -117,7 +110,9 @@ zero = %x30                   ; 0
 
 #### Notes
 
-JAXN adds non-finite values to the data model that can not be represented in JSON. The spelling of the identifiers is case-sensitive. All other extensions are only extending the syntax. JAXN allows `+NaN` and `-NaN` as alternatives for `NaN`, as well as `+Infinity` as an alternative to `Infinity`.
+JAXN adds non-finite values to the data model that can not be represented in JSON. The spelling of the identifiers is case-sensitive. JAXN allows `+NaN` and `-NaN` as alternatives for `NaN`, as well as `+Infinity` as an alternative to `Infinity`.
+
+All other extensions are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
 
 ## Strings
 
@@ -172,6 +167,7 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 * `\uXXXX` with UTF-16 surrogates **MUST** be handled before concatenation.
 * `\u{X...}` **MUST NOT** encode surrogates.
 * Concatenations can mix single- and double-quoted strings.
+* Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated. It happens before the final string is passed on from the parser.
 
 ## Unquoted Object Keys
 
@@ -199,6 +195,8 @@ i-continue = i-begin / DIGIT
 #### Notes
 
 Object keys are strings, wherefore the tokens `true`, `null`, and `false` are unambiguous shortcuts for `"true"`, `"null"`, and `"false"` when used in an object key position. Strings in object key positions can use the extended syntax for strings including the single-quoted variant, additional escape sequences and string concatenation, however unquoted object keys can **not** be concatenated.
+
+Unquoted object keys are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated. They are passed on as normal strings from the parser.
 
 ## Trailing Comma
 
@@ -230,6 +228,8 @@ The additional commas have no semantics.
 #### Notes
 
 The above grammar does not allow for adjacent commas (`[1,,2]`), a leading comma (`[,1]`), or placing a comma in an empty array or object (`[,]`).
+
+Trailing commas are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
 
 ## Binary Data
 
