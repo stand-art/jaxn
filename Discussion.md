@@ -40,7 +40,7 @@ A JAXN parser is...
 
 ## Comments
 
-JAXN allows comments, however, they are a presentation detail and must not have any effect on the serialization tree or representation graph. In particular, comments are not associated with a particular node. This improves interoperability and ensures that the main concern why comments are not part of JSON is taken care of. The usual purpose of a comment is to communicate between the human maintainers of a file. A typical example is comments in a configuration file.
+JAXN allows comments, however, they are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated. In particular, comments are not associated with a particular node. This improves interoperability and ensures that the main concern why comments are not part of JSON is taken care of. The usual purpose of a comment is to communicate between the human maintainers of a file. A typical example is comments in a configuration file.
 
 Michael Bolin writes:
 
