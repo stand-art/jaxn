@@ -17,6 +17,13 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 
 ## Extensions to JSON
 
+* [Comments](#comments)
+* [Numbers](#numbers)
+* [Strings](#strings)
+* [Unquoted Object Keys](#unquoted-object-keys)
+* [Trailing Comma](#trailing-comma)
+* [Binary Data](#binary-data)
+
 #### Comments
 
 * `# single-line comment`
