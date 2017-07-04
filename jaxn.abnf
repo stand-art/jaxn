@@ -3,30 +3,26 @@
 ; Based on the JSON grammar, see RFC 7159.
 ; See RFC 5234 for interpretation and core rules.
 
-eol = <end-of-line>           ; End-of-line
-eof = <end-of-file>           ; End-of-file
-
 comment = c-line / c-block
 
-c-line = c-begin-line *( c-char ) c-end-line
+c-line = c-begin-line *( c-char )
 
 c-begin-line = %x23 / %x2F.2F ; # or //
-c-end-line = eol / eof
 
-c-block = c-begin-block *( <!c-end-block> ( c-char / eol ) ) c-end-block
+c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
+
+c-block = c-begin-block *( <!c-end-block> ( c-char / %x0A / %x0D ) ) c-end-block
                               ; ! is a PEG's "not at"-operator
 
 c-begin-block = %x2F.2A       ; /*
 c-end-block = %x2A.2F         ; */
 
-c-char = HTAB / %x20-10FFFF   ; Any HTAB or printable character
-
 ws = *(
-          SP /                ; Space
-          HTAB /              ; Horizontal tab
-          eol /               ; Line ending
-	  comment             ; Comment
-      )
+        %x20 /                ; Space
+        %x09 /                ; Horizontal tab
+        %x0A /                ; Line feed or New line
+        %x0D /                ; Carriage return
+	comment )             ; Comment
 
 begin-array     = ws %x5B ws  ; [ left square bracket
 begin-object    = ws %x7B ws  ; { left curly bracket

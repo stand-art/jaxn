@@ -22,40 +22,38 @@ Allows single-line and block comments.
 * `// single-line comment`
 * `/* block comment */`
 
-#### Semantics
-
-Comments are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
-
-### Single-line comments
-
 #### Grammar
 
 ```abnf
-c-line = c-begin-line *( c-char ) c-end-line
+comment = c-line / c-block
+
+c-line = c-begin-line *( c-char )
 
 c-begin-line = %x23 / %x2F.2F ; # or //
-c-end-line = eol / eof
 
-c-char = HTAB / %x20-10FFFF   ; Any HTAB or printable character
-```
+c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
 
-#### Notes
-
-A single-line comment may not contain additional control characters. It ends at either the end of the line, or at the end of  input, whichever is encountered first.
-
-### Block comments
-
-#### Grammar
-
-```abnf
-c-block = c-begin-block *( <!c-end-block> ( c-char / eol ) ) c-end-block
+c-block = c-begin-block *( <!c-end-block> ( c-char / %x0A / %x0D ) ) c-end-block
                               ; ! is a PEG's "not at"-operator
 
 c-begin-block = %x2F.2A       ; /*
 c-end-block = %x2A.2F         ; */
+
+ws = *(
+        %x20 /                ; Space
+        %x09 /                ; Horizontal tab
+        %x0A /                ; Line feed or New line
+        %x0D /                ; Carriage return
+	comment )             ; Comment
 ```
 
+#### Semantics
+
+Comments are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
+
 #### Notes
+
+Single-line comments may not contain additional control characters. A single-line comment ends at either the end of the line, or at the end of  input, whichever is encountered first.
 
 Block comments do not nested. In other words, occurrences of `/*` within a block comment are not interpreted as anyhting else other than part of the comment.
 For simplicity, the grammar description uses the ! ("not at") operator from a PEG grammar in an ABNF prose-val element.
@@ -256,25 +254,24 @@ eof = <end-of-file>           ; End-of-file
 
 comment = c-line / c-block
 
-c-line = c-begin-line *( c-char ) c-end-line
+c-line = c-begin-line *( c-char )
 
 c-begin-line = %x23 / %x2F.2F ; # or //
-c-end-line = eol / eof
 
-c-block = c-begin-block *( <!c-end-block> ( c-char / eol ) ) c-end-block
+c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
+
+c-block = c-begin-block *( <!c-end-block> ( c-char / %x0A / %x0D ) ) c-end-block
                               ; ! is a PEG's "not at"-operator
 
 c-begin-block = %x2F.2A       ; /*
 c-end-block = %x2A.2F         ; */
 
-c-char = HTAB / %x20-10FFFF   ; Any HTAB or printable character
-
 ws = *(
-          SP /                ; Space
-          HTAB /              ; Horizontal tab
-          eol /               ; Line ending
-	  comment             ; Comment
-      )
+        %x20 /                ; Space
+        %x09 /                ; Horizontal tab
+        %x0A /                ; Line feed or New line
+        %x0D /                ; Carriage return
+	comment )             ; Comment
 
 begin-array     = ws %x5B ws  ; [ left square bracket
 begin-object    = ws %x7B ws  ; { left curly bracket
