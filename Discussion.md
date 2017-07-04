@@ -5,6 +5,7 @@ The following sections discuss the syntax and semantics of the extensions that J
 * [Data-Model](#data-model)
 * [Unicode](#unicode)
 * [White-Space](#white-space)
+* [Newline](#newline)
 * [Source Character Set](#source-character-set)
 * [Comments](#comments)
 * [Numbers](#numbers)
@@ -39,6 +40,10 @@ A JAXN parser parses a sequence of bytes, the input data. The parser is...
 
 JAXN does not allow additional white-space characters. Some other libraries allow additional white-space characters, but we do not see a real-world use-case for those. We believe users often add them by mistake and this is not a good-enough reason for us to allow them.
 
+## Newline
+
+JAXN grammar allow well-formed documents to contain any sequence of 0x0A (Line feed or New line) and 0x0D (Carriage return) characters, mixed in any way, to be contained in the source data. A JAXN parser is allowed to further restrict the accepted end-of-line markers, for example to the system-native 0x0A (as it is common on Unix- and macOS-systems) or to require the sequence 0x0D, 0x0A (on Windows-systems).
+
 ## Source Character Set
 
 The source character set (i.e., the Unicode code points that may be contained in the input data) consists of HTAB (0x09), the end-of-line characters (0x0A, 0x0D), and all code points from space upwards (0x20-0x10FFFF). JSON allows 0x7F, although it is a control character. JAXN stays compatible with JSON, so it has to allow it as well.
@@ -61,7 +66,7 @@ Michael Bolin writes:
 
 (Source: http://bolinfest.com/essays/json.html)
 
-Note that comments sometimes don't interact nicely with strings. If you try to comment out a parts of a document that contains strings, and if those strings contain the character sequence `*/`, using a block comment will fail. This problem of block comments existed long before JAXN. As JSON already allows escaping the slash with a backslash in strings, you might consider converting `*/` into `*\/` within the string in question, you will than be able to comment the string out (and in again) without problems.
+Note that comments sometimes don't interact nicely with strings. If you try to comment out a parts of a document that contains strings, and if those strings contain the character sequence `*/`, using a block comment will fail. This problem of block comments existed long before JAXN. As JSON already allows escaping the slash with a backslash in strings, you might consider converting `*/` into `*\/` within the string in question, you will then be able to comment the string out (and in again) without problems.
 
 The restrictions on the source character set also apply within comments.
 
