@@ -33,11 +33,16 @@ c-begin-line = %x23 / %x2F.2F ; # or //
 
 c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
 
-c-block = c-begin-block *( <!c-end-block> ( c-char / %x0A / %x0D ) ) c-end-block
-                              ; ! is a PEG's "not at"-operator
+c-block = c-begin-block *( c-no-star / ( 1*( c-star ) c-no-slash ) ) c-end-block
 
-c-begin-block = %x2F.2A       ; /*
-c-end-block = %x2A.2F         ; */
+c-begin-block = c-slash c-star
+c-end-block = 1*( c-star ) c-slash
+
+c-slash = %x2F                ; /
+c-star = %x2A                 ; *
+
+c-no-star = %x09 / %x0A / %x0D / %x20-29 / %x2B-10FFFF
+c-no-slash = %x09 / %x0A / %x0D / %x20-2E / %x30-10FFFF
 
 ws = *(
         %x20 /                ; Space
@@ -55,8 +60,7 @@ Comments are a presentation detail and must not have any effect on the serializa
 
 Single-line comments may not contain additional control characters. A single-line comment ends at either the end of the line, or at the end of  input, whichever is encountered first.
 
-Block comments do not nested. In other words, occurrences of `/*` within a block comment are not interpreted as anyhting else other than part of the comment.
-For simplicity, the grammar description uses the ! ("not at") operator from a PEG grammar in an ABNF prose-val element.
+Block comments do not nest. In other words, occurrences of `/*` within a block comment are not interpreted as anyhting else other than part of the comment.
 
 ## Numbers
 
@@ -260,11 +264,16 @@ c-begin-line = %x23 / %x2F.2F ; # or //
 
 c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
 
-c-block = c-begin-block *( <!c-end-block> ( c-char / %x0A / %x0D ) ) c-end-block
-                              ; ! is a PEG's "not at"-operator
+c-block = c-begin-block *( c-no-star / ( 1*( c-star ) c-no-slash ) ) c-end-block
 
-c-begin-block = %x2F.2A       ; /*
-c-end-block = %x2A.2F         ; */
+c-begin-block = c-slash c-star
+c-end-block = 1*( c-star ) c-slash
+
+c-slash = %x2F                ; /
+c-star = %x2A                 ; *
+
+c-no-star = %x09 / %x0A / %x0D / %x20-29 / %x2B-10FFFF
+c-no-slash = %x09 / %x0A / %x0D / %x20-2E / %x30-10FFFF
 
 ws = *(
         %x20 /                ; Space
