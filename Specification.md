@@ -253,9 +253,6 @@ The grammar for well-formed JAXN is based on and extends the ABNF grammar given 
 It is also available as a separate [ABNF file](jaxn.abnf).
 
 ```abnf
-eol = <end-of-line>           ; End-of-line
-eof = <end-of-file>           ; End-of-file
-
 comment = c-line / c-block
 
 c-line = c-begin-line *( c-char )
