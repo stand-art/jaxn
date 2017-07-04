@@ -3,8 +3,8 @@
 The following sections discuss the syntax and semantics of the extensions that JAXN brings to JSON, as well as rejected extensions that will not be added to JAXN.
 
 * [Data-Model](#data-model)
-* [White-Space](#white-space)
 * [Unicode](#unicode)
+* [White-Space](#white-space)
 * [Source Character Set](#source-character-set)
 * [Comments](#comments)
 * [Numbers](#numbers)
@@ -23,25 +23,29 @@ JAXN extends the JSON data model in two places.
 1. Allow `NaN`, `Infinity` and `-Infinity` for numeric values.
 2. Add a binary data type.
 
-## White-Space
-
-JAXN does not allow additional white-space characters. Some other libraries allow additional white-space characters, but we do not see a real-world use-case for those. We believe users often add them by mistake and this is not a good-enough reason for us to allow them.
-
 ## Unicode
 
 JAXN does not require additional Unicode support beyond what is already required by JSON itself. Some other libraries require additional Unicode support to implement certain extensions. While this seems reasonable if you are working with a programming language or environment where Unicode support is available, it places an additional burden on others, e.g. in the embedded world.
 
-A JAXN parser is...
+A JAXN parser parses a sequence of bytes, the input data. The parser is...
 
-* ...required to accept (correctly encoded) UTF-8 input, this is the only interoperable representation.
-* ...allowed to accept (correctly encoded) UTF-16 or UTF-32 input.
-* ...allowed to accept a byte order marker (BOM) at the begin of the input.
-* ...allowed to accept other encodings, provided that they are correctly identifier (no guessing!) and unambiguously mapped to a sequence of Unicode code points.
-* ...required to emit an error if the input is not correctly encoded.
+* ...required to accept (correctly encoded) UTF-8 input data, this is the only interoperable representation.
+* ...allowed to accept (correctly encoded) UTF-16 or UTF-32 input data.
+* ...allowed to accept a byte order marker (BOM) at the begin of the input data.
+* ...allowed to accept other encodings, provided that they are correctly identified (no guessing!) and unambiguously mapped to a sequence of Unicode code points.
+* ...required to emit an error if it encounters an (encoding) error in the input data.
+
+## White-Space
+
+JAXN does not allow additional white-space characters. Some other libraries allow additional white-space characters, but we do not see a real-world use-case for those. We believe users often add them by mistake and this is not a good-enough reason for us to allow them.
 
 ## Source Character Set
 
-The input is properly encoded Unicode characters, the source character set consists of HTAB (0x09), end-of-line characters (0x0A, 0x0D), and all characters from space upwards (0x20-0x10FFFF). JSON allows 0x7F, although it is a control character. JAXN stays compatible with JSON, so it has to allow it as well.
+The source character set (i.e., the Unicode code points that may be contained in the input data) consists of HTAB (0x09), the end-of-line characters (0x0A, 0x0D), and all code points from space upwards (0x20-0x10FFFF). JSON allows 0x7F, although it is a control character. JAXN stays compatible with JSON, so it has to allow it as well.
+
+If a JAXN parsers encounters a code point outside of the source character set, it must report an error.
+
+JAXN that not require any non-ASCII characters. All Unicode code points in the string values in the data model (*not* its representation in the input data) can be escaped. JAXN documents can therefore, like JSON documents, be limited to ASCII without loosing expressiveness.
 
 ## Comments
 
