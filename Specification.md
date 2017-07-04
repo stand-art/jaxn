@@ -33,10 +33,10 @@ c-begin-line = %x23 / %x2F.2F ; # or //
 
 c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
 
-c-block = c-begin-block *( c-no-star / ( 1*( c-star ) c-no-slash ) ) c-end-block
+c-block = c-begin-block *( c-no-star / ( 1*c-star c-no-slash ) ) c-end-block
 
 c-begin-block = c-slash c-star
-c-end-block = 1*( c-star ) c-slash
+c-end-block = 1*c-star c-slash
 
 c-slash = %x2F                ; /
 c-star = %x2A                 ; *
@@ -264,10 +264,10 @@ c-begin-line = %x23 / %x2F.2F ; # or //
 
 c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
 
-c-block = c-begin-block *( c-no-star / ( 1*( c-star ) c-no-slash ) ) c-end-block
+c-block = c-begin-block *( c-no-star / ( 1*c-star c-no-slash ) ) c-end-block
 
 c-begin-block = c-slash c-star
-c-end-block = 1*( c-star ) c-slash
+c-end-block = 1*c-star c-slash
 
 c-slash = %x2F                ; /
 c-star = %x2A                 ; *
