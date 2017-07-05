@@ -42,7 +42,7 @@ JAXN does not allow additional white-space characters. Some other libraries allo
 
 ## Newline
 
-JAXN grammar allow well-formed documents to contain any sequence of 0x0A (Line feed or New line) and 0x0D (Carriage return) characters, mixed in any way, to be contained in the source data. A JAXN parser is allowed to further restrict the accepted end-of-line markers, for example to the system-native 0x0A (as it is common on Unix- and macOS-systems) or to require the sequence 0x0D, 0x0A (on Windows-systems).
+JAXN grammar allow well-formed documents to contain any sequence of 0x0A (Line feed or New line) and 0x0D (Carriage return) characters, mixed in any way, to be contained in the source data. A JAXN parser is allowed (even expected) to further restrict the accepted end-of-line markers, for example to the system-native 0x0A (as it is common on Unix- and macOS-systems) or to require the sequence 0x0D, 0x0A (on Windows-systems). This is necessary to report sensible position information in case of parse errors, as the line number in which an error occurs depends on the specific end-of-line markers allowed/expected for the input data.
 
 ## Source Character Set
 
@@ -50,7 +50,7 @@ The source character set (i.e., the Unicode code points that may be contained in
 
 If a JAXN parsers encounters a code point outside of the source character set, it must report an error.
 
-JAXN that not require any non-ASCII characters. All Unicode code points in the string values in the data model (*not* its representation in the input data) can be escaped. JAXN documents can therefore, like JSON documents, be limited to ASCII without loosing expressiveness.
+JAXN does not *require* any non-ASCII characters in the input data. All Unicode code points in the string values in the data model can be written in an escaped form in the input data. JAXN documents can therefore, like JSON documents, be restricted to ASCII without loosing expressiveness.
 
 ## Comments
 
