@@ -60,7 +60,7 @@ Comments are a presentation detail and must not have any effect on the serializa
 
 Single-line comments may not contain additional control characters. A single-line comment ends at either the end of the line, or at the end of  input, whichever is encountered first.
 
-Block comments do not nest. In other words, occurrences of `/*` within a block comment are not interpreted as anyhting else other than part of the comment.
+Block comments do not nest. In other words, occurrences of `/*` within a block comment are not interpreted as anything else other than part of the comment.
 
 ## Numbers
 
