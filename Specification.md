@@ -178,7 +178,7 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 
 
 * Follows [RFC 3339](https://tools.ietf.org/html/rfc3339) syntax with additional restrictions.
-* Five sub-types:
+* Four sub-types:
 
   * Date: `2017-09-05`.
   * Time: `10:23:54.345678`.
