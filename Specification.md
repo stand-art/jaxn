@@ -5,9 +5,10 @@ The following sections specify the syntax and semantics of the extensions that J
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
+* [Date / Time](#date-time)
+* [Binary Data](#binary-data)
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
-* [Binary Data](#binary-data)
 * [ABNF for JAXN](#abnf-for-jaxn)
 
 ## Comments
@@ -233,6 +234,16 @@ The above grammar does not allow for adjacent commas (`[1,,2]`), a leading comma
 
 Trailing commas are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
 
+## Date / Time
+
+#### TODO: Add similar sections like for the other extensions.
+
+* Follows ISO-8601/RFC3339 syntax with additional restrictions.
+* Allow native (unquoted) date values: `2017-09-05`.
+* Allow native (unquoted) time values: `10:23:54.345678`.
+* Allow timestamps without timezone: `2017-09-05T10:23:54.345678`.
+* Allow timestamps with timezone: `2017-09-05T10:23:54.345678+0200`.
+
 ## Binary Data
 
 #### TODO: Add similar sections like for the other extensions.
@@ -352,6 +363,23 @@ s-quote = %x27                ; '
 
 unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 
+date-fullyear   = 4DIGIT
+date-month      = 2DIGIT      ; 01-12
+date-mday       = 2DIGIT      ; 01-28, 01-29, 01-30, 01-31 based on month/year
+time-hour       = 2DIGIT      ; 00-23
+time-minute     = 2DIGIT      ; 00-59
+time-second     = 2DIGIT      ; 00-58, 00-59, 00-60 based on leap second rules
+time-secfrac    = decimal-point 1*DIGIT
+time-numoffset  = ( plus / minus ) time-hour ":" time-minute
+time-offset     = "Z" / time-numoffset
+
+partial-time    = time-hour ":" time-minute ":" time-second [time-secfrac]
+
+full-date       = date-fullyear "-" date-month "-" date-mday
+full-time       = partial-time time-offset
+
+date-time       = full-date "T" full-time
+
 binary = b-value *( value-concat b-value )
 
 b-value = dollar [ b-string / b-direct ]
@@ -400,7 +428,7 @@ identifier = i-begin *i-continue
 i-begin = ALPHA / %x24 / %x5F
 i-continue = i-begin / DIGIT
 
-value = false / null / true / object / array / number / string / binary
+value = false / null / true / object / array / number / string / full-date / partial-time / date-time / binary
 
 JAXN-text = ws value ws
 ```

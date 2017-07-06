@@ -1,28 +1,29 @@
 # Welcome to JAXN
 
-JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully extends [JSON](https://tools.ietf.org/html/rfc7159) with new syntax that makes it more usable for humans, and with a few often-required additions to the data model.
+JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://tools.ietf.org/html/rfc7159) with a few often-required additions to the data model and with new syntax that makes it more usable for humans.
 
-> **JAXN IS CURRENTLY WORK-IN-PROGRESS**
+> :exclamation: **JAXN IS CURRENTLY WORK-IN-PROGRESS** :exclamation:
 >
 > Until version 1.0 of JAXN is published, everything is considered work-in-progress, and anything might still change. Ideas, feedback and other input is welcome and appreciated. Please feel free to open an issue, or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
 
-## What is JAXN?
-
-* A strict superset of JSON, every valid JSON document is also JAXN.
-* A syntactic extension to JSON that makes it more tractable for humans.
-* An extended JSON that adds often required features to the data model.
-* An extended JSON that improves the interoperability between libraries.
-* Simple to parse in a single pass without (much) look-ahead.
-* An implementation-language agnostic standard.
-
 ## Extensions to JSON
 
+* [Data Model](#data-model)
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
+* [Date / Time](#date-time)
+* [Binary Data](#binary-data)
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
-* [Binary Data](#binary-data)
+
+### Data Model
+
+* JAXN allows non-finite values `NaN`, `Infinity` and `-Infinity` for numbers.
+* JAXN adds a new data type for binary data.
+* JAXN adds new data types for date/time/timestamps.
+
+### JAXN string representation extensions
 
 #### Comments
 
@@ -44,13 +45,13 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
 * Allow concatenation of strings like `"Hello," + " world!"`.
 * TODO: Raw strings, i.e. strings that can span multiple lines without interpretation of escape sequences.
 
-#### Unquoted Object Keys
+#### Date / Time
 
-* Allow unquoted object keys, e.g. `{ foo: "Hello", bar: 42 }`.
-
-#### Trailing Comma
-
-* Allow `[1,2,3,]` and `{ foo: "Hello", bar: 42, }`.
+* Follows ISO-8601/RFC3339 syntax with additional restrictions.
+* Allow native (unquoted) date values: `2017-09-05`.
+* Allow native (unquoted) time values: `10:23:54.345678`.
+* Allow timestamps without timezone: `2017-09-05T10:23:54.345678`.
+* Allow timestamps with timezone: `2017-09-05T10:23:54.345678+0200`.
 
 #### Binary Data
 
@@ -62,6 +63,14 @@ JAXN (pronounced "Jackson") is a "relaxed JSON", a standard that carefully exten
   * Only printable ASCII characters allowed, no control characters.
   * No `\uXXXX` or `\u{...}` escape sequences allowed, instead:
   * Add `\xXX` for arbitrary byte values.
+
+#### Unquoted Object Keys
+
+* Allow unquoted object keys, e.g. `{ foo: "Hello", bar: 42 }`.
+
+#### Trailing Comma
+
+* Allow `[1,2,3,]` and `{ foo: "Hello", bar: 42, }`.
 
 ## More information
 

@@ -2,7 +2,7 @@
 
 The following sections discuss the syntax and semantics of the extensions that JAXN brings to JSON, as well as rejected extensions that will not be added to JAXN.
 
-* [Data-Model](#data-model)
+* [Data Model](#data-model)
 * [Unicode](#unicode)
 * [White-Space](#white-space)
 * [Newline](#newline)
@@ -10,12 +10,13 @@ The following sections discuss the syntax and semantics of the extensions that J
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
+* [Date / Time](#date-time)
+* [Binary Data](#binary-data)
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
-* [Binary Data](#binary-data)
 * [Conversion to JSON](#conversion-to-json)
 
-## Data-Model
+## Data Model
 
 Most "relaxed JSON" extensions focus on the syntax of the string representation. They sometimes do extend the data model, but they don't say so clearly or are even unaware of it. JAXN goes further, by clearly specifying which additional values and data types a library should support. This allows users to know what to expect from a JAXN-compatible library, or, looking at it from the other side, search for a JAXN-compatible library when they know that they need these extensions to the data model.
 
@@ -88,6 +89,18 @@ There appears to be an implicit silent consensus among JSON libraries to ignore 
 
 Merging of surrogate pairs, and the decision of whether a string contains unpaired surrogates, MUST be performed before concatentation of strings.
 
+## Date / Time
+
+In real-world uses, dates, times and timestamps are often needed data types. Representing this kind of data as string requires users of a library to take care of validation and interpretation which is tedious and error-prone. As JAXN recognizes the importance of date and time values, we extend the data model of a JAXN-compatible library by explicit data types for dates, time values and timestamps.
+
+TODO: Add discussion of date / time / date-time values.
+
+## Binary Data
+
+In real-world uses, one often needs to handle binary data. Representing this kind of data as strings requires, for example, hex- or base64-encoding. As JAXN recognizes the importance of binary data, we extend the data model of a JAXN-compatible library by an explicit binary type. For the representation in string form, we have chosen hex notation as base64 is human-unfriendly and adds additional implementation complexity. Having a binary type and a more direct representation allows for a more consise and reasonable representation.
+
+Implementations must treat binary data as a separate data type. This increases interoperability with binary protocols like CBOR as well as providing a clear separation of readable strings from binary data. The latter is helpful when you are dumping data to, say, a log-file.
+
 ## Unquoted Object Keys
 
 Quoting Michael Bolin:
@@ -118,12 +131,6 @@ Again, Michael Bolin provides a good rationale for trailing commas:
 ```
 
 (Source: http://bolinfest.com/essays/json.html)
-
-## Binary Data
-
-In real-world uses, one often needs to handle binary data. Representing this kind of data as strings requires, for example, hex- or base64-encoding. As JAXN recognizes the importance of binary data, we extend the data model of a JAXN-compatible library by an explicit binary type. For the representation in string form, we have chosen hex notation as base64 is human-unfriendly and adds additional implementation complexity. Having a binary type and a more direct representation allows for a more consise and reasonable representation.
-
-Implementations must treat binary data as a separate data type. This increases interoperability with binary protocols like CBOR as well as providing a clear separation of readable strings from binary data. The latter is helpful when you are dumping data to, say, a log-file.
 
 ## Conversion to JSON
 
