@@ -174,18 +174,53 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 
 ## Date / Time
 
-#### TODO: Add similar sections like for the other extensions.
+#### Synopsis
 
+Allows date, time, or timestamp values. Four types need to be distinguished:
 
-* Follows [RFC 3339](https://tools.ietf.org/html/rfc3339) syntax with additional restrictions.
-* Four sub-types:
+* A date (without a time or an offset).
+* A time (without a date or an offset).
+* A timestamp without an offset.
+* A timestamp with an explicit offset.
 
-  * Date: `2017-09-05`.
-  * Time: `10:23:54.345678`.
-  * Timestamps: `2017-09-05T10:23:54.345678`.
-  * Timestamps with timezone: `2017-09-05T10:23:54.345678+02:00`.
+#### Examples
 
-* The precision of fractional seconds is implementation specific, but at least millisecond precision is expected. If the value contains greater precision than the implementation can support, the additional precision must be truncated, not rounded.
+* `2017-09-05`
+* `10:23:54.345678`
+* `2017-09-05T10:23:54.345678`
+* `2017-09-05T10:23:54.345678+02:00`
+
+#### Grammar
+
+```abnf
+time-value = full-date / partial-time / full-time / date-time / full-date-time
+
+date-fullyear     = 4DIGIT
+date-month        = 2DIGIT    ; 01-12
+date-mday         = 2DIGIT    ; 01-28, 01-29, 01-30, 01-31 based on month/year
+time-hour         = 2DIGIT    ; 00-23
+time-minute       = 2DIGIT    ; 00-59
+time-second       = 2DIGIT    ; 00-58, 00-59, 00-60 based on leap second rules
+time-secfrac      = decimal-point 1*DIGIT
+time-numoffset    = ( plus / minus ) time-hour ":" time-minute
+time-offset       = "Z" / time-numoffset
+
+partial-time      = time-hour ":" time-minute ":" time-second [ time-secfrac ]
+
+full-date         = date-fullyear "-" date-month "-" date-mday
+full-time         = partial-time time-offset
+
+date-time         = full-date "T" partial-time
+full-date-time    = date-time time-offset
+```
+
+#### Notes
+
+The formats are described in [RFC 3339](https://tools.ietf.org/html/rfc3339), additional restrictions apply. The represented date, time or timestamp must be valid, e.g. not `2000-02-30`. For interoperability, it is best *not* to use leap-seconds.
+
+The precision of fractional seconds is implementation specific, but at least millisecond precision must be implemented. Nanosecond precision is recommended. If the value contains greater precision than the implementation can support, the additional precision must be truncated, not rounded.
+
+Each type is a unique type and shall not be confused with the others. A round-trip must retain the type.
 
 ## Binary Data
 
