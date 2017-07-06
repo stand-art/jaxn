@@ -91,7 +91,7 @@ Merging of surrogate pairs, and the decision of whether a string contains unpair
 
 ## Date / Time
 
-In real-world uses, dates, times and timestamps are often needed data types. Representing this kind of data as string requires users of a library to take care of validation and interpretation which is tedious and error-prone. As JAXN recognizes the importance of date and time values, we extend the data model of a JAXN-compatible library by explicit data types for dates, time values and timestamps.
+In real-world uses, dates, times and timestamps are often needed data types. Representing this kind of data as string requires users of a library to take care of validation and interpretation which is tedious and error-prone. As JAXN recognizes the importance of date and time values, we extend the data model of a JAXN-compatible library by explicit data types for time-related values.
 
 TODO: Add discussion of date / time / date-time values.
 

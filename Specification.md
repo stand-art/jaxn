@@ -172,6 +172,34 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 * Concatenations can mix single- and double-quoted strings.
 * Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated. It happens before the final string is passed on from the parser.
 
+## Date / Time
+
+#### TODO: Add similar sections like for the other extensions.
+
+
+* Follows [RFC 3339](https://tools.ietf.org/html/rfc3339) syntax with additional restrictions.
+* Five sub-types:
+
+  * Date: `2017-09-05`.
+  * Time: `10:23:54.345678`.
+  * Timestamps: `2017-09-05T10:23:54.345678`.
+  * Timestamps with timezone: `2017-09-05T10:23:54.345678+02:00`.
+
+* The precision of fractional seconds is implementation specific, but at least millisecond precision is expected. If the value contains greater precision than the implementation can support, the additional precision must be truncated, not rounded.
+
+## Binary Data
+
+#### TODO: Add similar sections like for the other extensions.
+
+* Binary data represents arbitrary byte sequences, not Unicode strings.
+* Two syntactical variants that can be concatenated with each other.
+* Hexdumped binary, e.g. `$48656c6c6f2c20776f726c6421`.
+  * Allows optional dots, e.g. `$48.65.6c.6c.6f.2c.20.77.6f.72.6c.64.21`.
+* Binary strings, e.g. `$"Hello, \x77orld!"`.
+  * Only printable ASCII characters allowed, no control characters.
+  * No `\uXXXX` or `\u{...}` escape sequences allowed, instead:
+  * Add `\xXX` for arbitrary byte values.
+
 ## Unquoted Object Keys
 
 #### Synopsis
@@ -233,29 +261,6 @@ The additional commas have no semantics.
 The above grammar does not allow for adjacent commas (`[1,,2]`), a leading comma (`[,1]`), or placing a comma in an empty array or object (`[,]`).
 
 Trailing commas are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
-
-## Date / Time
-
-#### TODO: Add similar sections like for the other extensions.
-
-* Follows ISO-8601/RFC3339 syntax with additional restrictions.
-* Allow native (unquoted) date values: `2017-09-05`.
-* Allow native (unquoted) time values: `10:23:54.345678`.
-* Allow timestamps without timezone: `2017-09-05T10:23:54.345678`.
-* Allow timestamps with timezone: `2017-09-05T10:23:54.345678+0200`.
-
-## Binary Data
-
-#### TODO: Add similar sections like for the other extensions.
-
-* Binary data represents arbitrary byte sequences, not Unicode strings.
-* Two syntactical variants that can be concatenated with each other.
-* Hexdumped binary, e.g. `$48656c6c6f2c20776f726c6421`.
-  * Allows optional dots, e.g. `$48.65.6c.6c.6f.2c.20.77.6f.72.6c.64.21`.
-* Binary strings, e.g. `$"Hello, \x77orld!"`.
-  * Only printable ASCII characters allowed, no control characters.
-  * No `\uXXXX` or `\u{...}` escape sequences allowed, instead:
-  * Add `\xXX` for arbitrary byte values.
 
 ## ABNF for JAXN
 
@@ -363,22 +368,25 @@ s-quote = %x27                ; '
 
 unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 
-date-fullyear   = 4DIGIT
-date-month      = 2DIGIT      ; 01-12
-date-mday       = 2DIGIT      ; 01-28, 01-29, 01-30, 01-31 based on month/year
-time-hour       = 2DIGIT      ; 00-23
-time-minute     = 2DIGIT      ; 00-59
-time-second     = 2DIGIT      ; 00-58, 00-59, 00-60 based on leap second rules
-time-secfrac    = decimal-point 1*DIGIT
-time-numoffset  = ( plus / minus ) time-hour ":" time-minute
-time-offset     = "Z" / time-numoffset
+time-value = full-date / partial-time / full-time / date-time / full-date-time
 
-partial-time    = time-hour ":" time-minute ":" time-second [time-secfrac]
+date-fullyear     = 4DIGIT
+date-month        = 2DIGIT    ; 01-12
+date-mday         = 2DIGIT    ; 01-28, 01-29, 01-30, 01-31 based on month/year
+time-hour         = 2DIGIT    ; 00-23
+time-minute       = 2DIGIT    ; 00-59
+time-second       = 2DIGIT    ; 00-58, 00-59, 00-60 based on leap second rules
+time-secfrac      = decimal-point 1*DIGIT
+time-numoffset    = ( plus / minus ) time-hour ":" time-minute
+time-offset       = "Z" / time-numoffset
 
-full-date       = date-fullyear "-" date-month "-" date-mday
-full-time       = partial-time time-offset
+partial-time      = time-hour ":" time-minute ":" time-second [time-secfrac]
 
-date-time       = full-date "T" full-time
+full-date         = date-fullyear "-" date-month "-" date-mday
+full-time         = partial-time time-offset
+
+date-time         = full-date "T" partial-time
+full-date-time    = date-time time-offset
 
 binary = b-value *( value-concat b-value )
 
@@ -428,7 +436,7 @@ identifier = i-begin *i-continue
 i-begin = ALPHA / %x24 / %x5F
 i-continue = i-begin / DIGIT
 
-value = false / null / true / object / array / number / string / full-date / partial-time / date-time / binary
+value = false / null / true / object / array / number / string / time-value / binary
 
 JAXN-text = ws value ws
 ```

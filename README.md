@@ -23,7 +23,7 @@ JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://
 * JAXN adds a new data type for binary data.
 * JAXN adds new data types for date/time/timestamps.
 
-### JAXN string representation extensions
+### JAXN representation
 
 #### Comments
 
@@ -47,11 +47,15 @@ JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://
 
 #### Date / Time
 
-* Follows ISO-8601/RFC3339 syntax with additional restrictions.
-* Allow native (unquoted) date values: `2017-09-05`.
-* Allow native (unquoted) time values: `10:23:54.345678`.
-* Allow timestamps without timezone: `2017-09-05T10:23:54.345678`.
-* Allow timestamps with timezone: `2017-09-05T10:23:54.345678+0200`.
+* Follows [RFC 3339](https://tools.ietf.org/html/rfc3339) syntax with additional restrictions.
+* Five sub-types:
+
+  * Date: `2017-09-05`.
+  * Time: `10:23:54.345678`.
+  * Timestamps: `2017-09-05T10:23:54.345678`.
+  * Timestamps with timezone: `2017-09-05T10:23:54.345678+02:00`.
+
+* The precision of fractional seconds is implementation specific, but at least millisecond precision is expected. If the value contains greater precision than the implementation can support, the additional precision must be truncated, not rounded.
 
 #### Binary Data
 
