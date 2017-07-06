@@ -12,7 +12,7 @@ JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
-* [Date / Time](#date-time)
+* [Date / Time](#date--time)
 * [Binary Data](#binary-data)
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
