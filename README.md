@@ -8,11 +8,15 @@ JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://
 
 ## The JAXN Data Model
 
+JAXN extends the JSON data model with the following points:
+
 * Allows non-finite values `NaN`, `Infinity` and `-Infinity` for numbers.
 * Adds a new data type for binary data.
 * Adds new data types for date/time/timestamps.
 
 ## The JAXN String Representation
+
+JAXN string representation extends the JSON string representation with the following points:
 
 * [Comments](#comments)
 * [Numbers](#numbers)
