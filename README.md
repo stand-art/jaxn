@@ -6,9 +6,14 @@ JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://
 >
 > Until version 1.0 of JAXN is published, everything is considered work-in-progress, and anything might still change. Ideas, feedback and other input is welcome and appreciated. Please feel free to open an issue, or write to [`jaxn@icemx.net`](mailto:jaxn@icemx.net).
 
-## Extensions to JSON
+## The JAXN Data Model
 
-* [Data Model](#data-model)
+* Allows non-finite values `NaN`, `Infinity` and `-Infinity` for numbers.
+* Adds a new data type for binary data.
+* Adds new data types for date/time/timestamps.
+
+## The JAXN String Representation
+
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
@@ -16,14 +21,6 @@ JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://
 * [Binary Data](#binary-data)
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
-
-### Data Model
-
-* JAXN allows non-finite values `NaN`, `Infinity` and `-Infinity` for numbers.
-* JAXN adds a new data type for binary data.
-* JAXN adds new data types for date/time/timestamps.
-
-### JAXN representation
 
 #### Comments
 
