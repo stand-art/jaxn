@@ -9,7 +9,6 @@ The following sections specify the syntax and semantics of the extensions that J
 * [Binary Data](#binary-data)
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
-* [ABNF for JAXN](#abnf-for-jaxn)
 
 ## Comments
 
@@ -224,16 +223,64 @@ Each type is a unique type and shall not be confused with the others. A round-tr
 
 ## Binary Data
 
-#### TODO: Add similar sections like for the other extensions.
+#### Synopsis
+
+Allow binary data as a separate type, in two forms: Hexdump or string.
+
+#### Examples
+
+* `$"Hello, \x77orld!"` (binary string)
+* `$48656c6c6f2c20776f726c6421` (binary hex)
+* `$48656c6c6f.2c20.776f726c64.21`
+* `$48.65.6c.6c.6f.2c.20.77.6f.72.6c.64.21`
+
+#### Grammar
+
+```abnf
+binary = b-value *( value-concat b-value )
+
+b-value = dollar [ b-string / b-direct ]
+
+b-string = b-s-string / b-d-string
+
+b-d-string = d-quote *( b-char / s-quote ) d-quote
+b-s-string = s-quote *( b-char / d-quote ) s-quote
+
+b-char = b-unescaped /
+         escape (
+             %x22 /           ; "    double quote    0x22
+             %x27 /           ; '    single quote    0x27
+             %x5C /           ; \    reverse solidus 0x5C
+             %x2F /           ; /    solidus         0x2F
+             %x30 /           ; 0    nul             0x00
+             %x62 /           ; b    backspace       0x08
+             %x66 /           ; f    form feed       0x0C
+             %x6E /           ; n    line feed       0x0A
+             %x72 /           ; r    carriage return 0x0D
+             %x74 /           ; t    tab             0x09
+             %x76 /           ; v    vtab            0x0B
+             %x78 2HEXDIG )   ; xXX                  0xXX
+
+b-unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-7E
+
+b-direct = b-part *( dot b-part )
+
+b-part = 1*b-byte
+
+b-byte = 2HEXDIG
+
+dollar = %x24                 ; $
+dot = %x2E                    ; .
+```
+
+#### Notes
 
 * Binary data represents arbitrary byte sequences, not Unicode strings.
-* Two syntactical variants that can be concatenated with each other.
-* Hexdumped binary, e.g. `$48656c6c6f2c20776f726c6421`.
-  * Allows optional dots, e.g. `$48.65.6c.6c.6f.2c.20.77.6f.72.6c.64.21`.
-* Binary strings, e.g. `$"Hello, \x77orld!"`.
-  * Only printable ASCII characters allowed, no control characters.
-  * No `\uXXXX` or `\u{...}` escape sequences allowed, instead:
-  * Add `\xXX` for arbitrary byte values.
+* In binary strings only printable ASCII characters are allowed, no control characters.
+* No `\uXXXX` or `\u{...}` escape sequences allowed, instead:
+* Escape sequence `\xXX` for arbitrary byte values.
+* Concatenations can mix single- and double-quoted binary strings as well as hexdumped data.
+* Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated. It happens before the final binary value is passed on from the parser.
 
 ## Unquoted Object Keys
 
@@ -296,184 +343,5 @@ The additional commas have no semantics.
 The above grammar does not allow for adjacent commas (`[1,,2]`), a leading comma (`[,1]`), or placing a comma in an empty array or object (`[,]`).
 
 Trailing commas are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
-
-## ABNF for JAXN
-
-The grammar for well-formed JAXN is based on and extends the ABNF grammar given in the JSON RFC 7159.
-
-It is also available as a separate [ABNF file](jaxn.abnf).
-
-```abnf
-comment = c-line / c-block
-
-c-line = c-begin-line *( c-char )
-
-c-begin-line = %x23 / %x2F.2F ; # or //
-
-c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
-
-c-block = c-begin-block *( c-no-star / ( 1*c-star c-no-slash ) ) c-end-block
-
-c-begin-block = c-slash c-star
-c-end-block = 1*c-star c-slash
-
-c-slash = %x2F                ; /
-c-star = %x2A                 ; *
-
-c-no-star = %x09 / %x0A / %x0D / %x20-29 / %x2B-10FFFF
-c-no-slash = %x09 / %x0A / %x0D / %x20-2E / %x30-10FFFF
-
-ws = *(
-        %x20 /                ; Space
-        %x09 /                ; Horizontal tab
-        %x0A /                ; Line feed or New line
-        %x0D /                ; Carriage return
-	comment )             ; Comment
-
-begin-array     = ws %x5B ws  ; [ left square bracket
-begin-object    = ws %x7B ws  ; { left curly bracket
-end-array       = ws %x5D ws  ; ] right square bracket
-end-object      = ws %x7D ws  ; } right curly bracket
-name-separator  = ws %x3A ws  ; : colon
-value-separator = ws %x2C ws  ; , comma
-value-concat    = ws %x2B ws  ; + plus
-
-value-sep-opt = [ value-separator ]
-
-null  = %x6E.75.6C.6C         ; null
-true  = %x74.72.75.65         ; true
-false = %x66.61.6C.73.65      ; false
-
-number = [ plus / minus ] ( nan / inf / hex / dec )
-
-nan = %x4E.61.4E              ; NaN
-
-inf = %x49.6E.66.69.6E.69.74.79
-                              ; Infinity
-
-hex = zero x 1*HEXDIG         ; 0xXXX...
-
-dec = ( int [ frac0 ] / frac1 ) [ exp ]
-
-decimal-point = %x2E          ; .
-
-digit1-9 = %x31-39            ; 1-9
-
-e = %x65 / %x45               ; e E
-x = %x78 / %x58               ; x X
-
-exp = e [ plus / minus ] 1*DIGIT
-
-frac0 = decimal-point *DIGIT
-frac1 = decimal-point 1*DIGIT
-
-int = zero / ( digit1-9 *DIGIT )
-
-plus = %x2B                   ; +
-minus = %x2D                  ; -
-zero = %x30                   ; 0
-
-string = string-part *( value-concat string-part )
-
-string-part = d-string / s-string
-
-d-string = d-quote *( s-char / s-quote ) d-quote
-s-string = s-quote *( s-char / d-quote ) s-quote
-
-s-char = unescaped /
-         escape (
-             %x22 /           ; "    double quote    U+0022
-             %x27 /           ; '    single quote    U+0027
-             %x5C /           ; \    reverse solidus U+005C
-             %x2F /           ; /    solidus         U+002F
-             %x30 /           ; 0    nul             U+0000
-             %x62 /           ; b    backspace       U+0008
-             %x66 /           ; f    form feed       U+000C
-             %x6E /           ; n    line feed       U+000A
-             %x72 /           ; r    carriage return U+000D
-             %x74 /           ; t    tab             U+0009
-             %x76 /           ; v    vtab            U+000B
-             %x75 4HEXDIG /   ; uXXXX                U+XXXX
-             %x75 %x7B 1*HEXDIG %x7D )
-                              ; u{X...}              U+X...
-
-escape = %x5C                 ; \
-d-quote = %x22                ; "
-s-quote = %x27                ; '
-
-unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
-
-time-value = full-date / partial-time / full-time / date-time / full-date-time
-
-date-fullyear     = 4DIGIT
-date-month        = 2DIGIT    ; 01-12
-date-mday         = 2DIGIT    ; 01-28, 01-29, 01-30, 01-31 based on month/year
-time-hour         = 2DIGIT    ; 00-23
-time-minute       = 2DIGIT    ; 00-59
-time-second       = 2DIGIT    ; 00-58, 00-59, 00-60 based on leap second rules
-time-secfrac      = decimal-point 1*DIGIT
-time-numoffset    = ( plus / minus ) time-hour ":" time-minute
-time-offset       = "Z" / time-numoffset
-
-partial-time      = time-hour ":" time-minute ":" time-second [ time-secfrac ]
-
-full-date         = date-fullyear "-" date-month "-" date-mday
-full-time         = partial-time time-offset
-
-date-time         = full-date "T" partial-time
-full-date-time    = date-time time-offset
-
-binary = b-value *( value-concat b-value )
-
-b-value = dollar [ b-string / b-direct ]
-
-b-string = b-s-string / b-d-string
-
-b-d-string = d-quote *( b-char / s-quote ) d-quote
-b-s-string = s-quote *( b-char / d-quote ) s-quote
-
-b-char = b-unescaped /
-         escape (
-             %x22 /           ; "    double quote    0x22
-             %x27 /           ; '    single quote    0x27
-             %x5C /           ; \    reverse solidus 0x5C
-             %x2F /           ; /    solidus         0x2F
-             %x30 /           ; 0    nul             0x00
-             %x62 /           ; b    backspace       0x08
-             %x66 /           ; f    form feed       0x0C
-             %x6E /           ; n    line feed       0x0A
-             %x72 /           ; r    carriage return 0x0D
-             %x74 /           ; t    tab             0x09
-             %x76 /           ; v    vtab            0x0B
-             %x78 2HEXDIG )   ; xXX                  0xXX
-
-b-unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-7E
-
-b-direct = b-part *( dot b-part )
-
-b-part = 1*b-byte
-
-b-byte = 2HEXDIG
-
-dollar = %x24                 ; $
-dot = %x2E                    ; .
-
-array = begin-array [ value *( value-separator value ) value-sep-opt ] end-array
-
-object = begin-object [ member *( value-separator member ) value-sep-opt ] end-object
-
-member = key name-separator value
-
-key = string / identifier
-
-identifier = i-begin *i-continue
-
-i-begin = ALPHA / %x24 / %x5F
-i-continue = i-begin / DIGIT
-
-value = false / null / true / object / array / number / string / time-value / binary
-
-JAXN-text = ws value ws
-```
 
 Copyright (c) 2017 Daniel Frey and Dr. Colin Hirsch
