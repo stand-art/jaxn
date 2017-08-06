@@ -20,10 +20,11 @@ The following sections discuss the syntax and semantics of the extensions that J
 
 Most "relaxed JSON" extensions focus on the syntax of the string representation. They sometimes do extend the data model, but they don't say so clearly or are even unaware of it. JAXN goes further, by clearly specifying which additional values and data types a library should support. This allows users to know what to expect from a JAXN-compatible library, or, looking at it from the other side, search for a JAXN-compatible library when they know that they need these extensions to the data model.
 
-JAXN extends the JSON data model in two places.
+JAXN extends the JSON data model in three places.
 
 1. Allow `NaN`, `Infinity` and `-Infinity` for numeric values.
 2. Add a binary data type.
+3. Add date/time/timestamp data types.
 
 ## Unicode
 
