@@ -10,6 +10,8 @@ The following sections specify the syntax and semantics of the extensions that J
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
 
+Note: The grammar rules are an excerpt from the complete [JAXN grammar](jaxn.abnf). The JAXN grammar is based on the JSON grammar given in [RFC 7159](https://tools.ietf.org/html/rfc7159), both are in ABNF syntax, defined in [RFC 5234](https://tools.ietf.org/html/rfc5234).
+
 ## Comments
 
 #### Synopsis
@@ -331,8 +333,6 @@ array = begin-array [ value *( value-separator value ) value-sep-opt ] end-array
 
 object = begin-object [ member *( value-separator member ) value-sep-opt ] end-object
 ```
-
-(only showing the relevant differences against RFC 7159)
 
 #### Semantics
 
