@@ -141,4 +141,4 @@ A JAXN data value may contain values that have no direct representation in JSON.
 * `"Infinity"` and `"-Infinity"`. No other strings should be used, e.g. `"Inf"`, `"+Infinity"`, etc.
 * Binary data should be represented as a string containing the hex encoded data, e.g. `"496E66696E697479"`.
 
-Copyright (c) 2017 Daniel Frey and Dr. Colin Hirsch
+Copyright (c) 2017-2018 Daniel Frey and Dr. Colin Hirsch

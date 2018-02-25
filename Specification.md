@@ -35,7 +35,7 @@ c-begin-line = %x23 / %x2F.2F ; # or //
 
 c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
 
-c-block = c-begin-block *( c-no-star / ( 1*c-star c-no-slash ) ) c-end-block
+c-block = c-begin-block *( c-no-star / ( 1*c-star c-no-star-or-slash ) ) c-end-block
 
 c-begin-block = c-slash c-star
 c-end-block = 1*c-star c-slash
@@ -44,7 +44,7 @@ c-slash = %x2F                ; /
 c-star = %x2A                 ; *
 
 c-no-star = %x09 / %x0A / %x0D / %x20-29 / %x2B-10FFFF
-c-no-slash = %x09 / %x0A / %x0D / %x20-2E / %x30-10FFFF
+c-no-star-or-slash = %x09 / %x0A / %x0D / %x20-29 / %x2B-2E / %x30-10FFFF
 
 ws = *(
         %x20 /                ; Space
@@ -344,4 +344,4 @@ The above grammar does not allow for adjacent commas (`[1,,2]`), a leading comma
 
 Trailing commas are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
 
-Copyright (c) 2017 Daniel Frey and Dr. Colin Hirsch
+Copyright (c) 2017-2018 Daniel Frey and Dr. Colin Hirsch

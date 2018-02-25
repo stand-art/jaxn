@@ -27,4 +27,4 @@ Each testcase consists of one valid JAXN input file, and one valid JAXN referenc
 The JAXN input file must be parsed and then printed to a JAXN output file.
 The test passes if the JAXN output file and the JAXN reference file are equivalent.
 
-Copyright (c) 2017 Daniel Frey and Dr. Colin Hirsch
+Copyright (c) 2017-2018 Daniel Frey and Dr. Colin Hirsch

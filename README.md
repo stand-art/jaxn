@@ -83,4 +83,4 @@ JAXN string representation extends the JSON string representation with the follo
 * [taocpp/json](https://github.com/taocpp/json)
 * ...
 
-Copyright (c) 2017 Daniel Frey and Dr. Colin Hirsch
+Copyright (c) 2017-2018 Daniel Frey and Dr. Colin Hirsch
