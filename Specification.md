@@ -194,25 +194,25 @@ Allows date, time, or timestamp values. Four types need to be distinguished:
 #### Grammar
 
 ```abnf
-time-value = full-date / partial-time / full-time / date-time / full-date-time
+time-value = local-date / local-time / local-date-time / offset-date-time
 
 date-fullyear     = 4DIGIT
 date-month        = 2DIGIT    ; 01-12
 date-mday         = 2DIGIT    ; 01-28, 01-29, 01-30, 01-31 based on month/year
+
 time-hour         = 2DIGIT    ; 00-23
 time-minute       = 2DIGIT    ; 00-59
 time-second       = 2DIGIT    ; 00-58, 00-59, 00-60 based on leap second rules
 time-secfrac      = decimal-point 1*DIGIT
+
 time-numoffset    = ( plus / minus ) time-hour ":" time-minute
 time-offset       = "Z" / time-numoffset
 
-partial-time      = time-hour ":" time-minute ":" time-second [ time-secfrac ]
+local-time        = time-hour ":" time-minute ":" time-second [ time-secfrac ]
+local-date        = date-fullyear "-" date-month "-" date-mday
 
-full-date         = date-fullyear "-" date-month "-" date-mday
-full-time         = partial-time time-offset
-
-date-time         = full-date "T" partial-time
-full-date-time    = date-time time-offset
+local-date-time   = local-date "T" local-time
+offset-date-time  = local-date-time time-offset
 ```
 
 #### Notes
