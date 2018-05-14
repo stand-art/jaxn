@@ -51,7 +51,7 @@ JAXN string representation extends the JSON string representation with the follo
 * Date: `2017-09-05`.
 * Time: `10:23:54.345678`.
 * Timestamp: `2017-09-05T10:23:54.345678`.
-* Timestamp with timezone: `2017-09-05T10:23:54.345678+02:00`.
+* Timestamp with offset: `2017-09-05T10:23:54.345678+02:00`.
 
 #### Binary Data
 
