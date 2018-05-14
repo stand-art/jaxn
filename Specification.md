@@ -182,7 +182,7 @@ Allows date, time, or timestamp values. Four types need to be distinguished:
 * A date (without a time or an offset).
 * A time (without a date or an offset).
 * A timestamp without an offset.
-* A timestamp with an explicit offset.
+* A timestamp with an offset.
 
 #### Examples
 
