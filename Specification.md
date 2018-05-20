@@ -10,7 +10,8 @@ The following sections specify the syntax and semantics of the extensions that J
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
 
-Note: The grammar rules are an excerpt from the complete [JAXN grammar](jaxn.abnf). The JAXN grammar is based on the JSON grammar given in [RFC 7159](https://tools.ietf.org/html/rfc7159), both are in ABNF syntax, defined in [RFC 5234](https://tools.ietf.org/html/rfc5234).
+Note: The grammar rules are an excerpt from the complete [JAXN grammar](jaxn.abnf).
+The JAXN grammar is based on the JSON grammar given in [RFC 7159](https://tools.ietf.org/html/rfc7159), both are in ABNF syntax, defined in [RFC 5234](https://tools.ietf.org/html/rfc5234).
 
 ## Comments
 
@@ -60,9 +61,11 @@ Comments are a presentation detail and must not have any effect on the serializa
 
 #### Notes
 
-Single-line comments may not contain additional control characters. A single-line comment ends at either the end of the line, or at the end of  input, whichever is encountered first.
+Single-line comments may not contain additional control characters.
+A single-line comment ends at either the end of the line, or at the end of the input, whichever is encountered first.
 
-Block comments do not nest. In other words, occurrences of `/*` within a block comment are not interpreted as anything else other than part of the comment.
+Block comments do not nest.
+In other words, occurrences of `/*` within a block comment are not interpreted as anything else other than part of the comment.
 
 ## Numbers
 
@@ -114,7 +117,9 @@ zero = %x30                   ; 0
 
 #### Notes
 
-JAXN adds non-finite values to the data model that can not be represented in JSON. The spelling of the identifiers is case-sensitive. JAXN allows `+NaN` and `-NaN` as alternatives for `NaN`, as well as `+Infinity` as an alternative to `Infinity`.
+JAXN adds non-finite values to the data model that can not be represented in JSON.
+The spelling of the identifiers is case-sensitive.
+JAXN allows `+NaN` and `-NaN` as alternatives for `NaN`, as well as `+Infinity` as an alternative to `Infinity`.
 
 All other extensions are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
 
@@ -179,10 +184,10 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 
 Allows date, time, or timestamp values. Four types need to be distinguished:
 
-* A date (without a time or an offset).
-* A time (without a date or an offset).
-* A timestamp without an offset.
-* A timestamp with an offset.
+* A date (without a time or an offset). In the context of JAXN, this is referred to as a "local date".
+* A time (without a date or an offset). In the context of JAXN, this is referred to as a "local time".
+* A timestamp without an offset. In the context of JAXN, this is referred to as a "local date-time".
+* A timestamp with an offset. In the context of JAXN, this is referred to as an "offset date-time".
 
 #### Examples
 
@@ -217,11 +222,22 @@ offset-date-time  = local-date-time time-offset
 
 #### Notes
 
-The formats are described in [RFC 3339](https://tools.ietf.org/html/rfc3339), additional restrictions apply. The represented date, time or timestamp must be valid, e.g. not `2000-02-30`. For interoperability, it is best *not* to use leap-seconds.
+The formats are described in [RFC 3339](https://tools.ietf.org/html/rfc3339), additional restrictions apply.
+The represented date, time or timestamp must be valid, e.g. not `2000-02-30`.
+Leap second support is optional, an implementation may choose not to support leap-seconds.
+For interoperability, it is best *not* to use leap-seconds.
 
-The precision of fractional seconds is implementation specific, but at least millisecond precision must be implemented. Nanosecond precision is recommended. If the value contains greater precision than the implementation can support, the additional precision must be truncated, not rounded.
+The precision of fractional seconds is implementation specific, but at least millisecond precision must be implemented.
+Nanosecond precision is recommended.
+If the value contains greater precision than the implementation can support, the additional fractional second digits must be truncated, not rounded.
+Round trips may truncate fractional second digits, or add trailing zeros if necessary.
 
-Each type is a unique type and shall not be confused with the others. A round-trip must retain the type.
+Two offset date-time values are considered equal when both the local date-time part as well as the offset are equal.
+The values `2000-01-01T00:02:00+00:00` and `2000-01-01T00:00:00+02:00` are *not* considered equal in JAXN.
+The offsets `+00:00`, `-00:00` and `Z` represent the same offset value, a round trip may interchange them.
+
+Each type is a unique type and shall not be confused with the others.
+A round-trip must retain the type.
 
 ## Binary Data
 
@@ -309,9 +325,11 @@ i-continue = i-begin / DIGIT
 
 #### Notes
 
-Object keys are strings, wherefore the tokens `true`, `null`, and `false` are unambiguous shortcuts for `"true"`, `"null"`, and `"false"` when used in an object key position. Strings in object key positions can use the extended syntax for strings including the single-quoted variant, additional escape sequences and string concatenation, however unquoted object keys can **not** be concatenated.
+Object keys are strings, wherefore the tokens `true`, `null`, and `false` are unambiguous shortcuts for `"true"`, `"null"`, and `"false"` when used in an object key position.
+Strings in object key positions can use the extended syntax for strings including the single-quoted variant, additional escape sequences and string concatenation, however unquoted object keys can **not** be concatenated.
 
-Unquoted object keys are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated. They are passed on as normal strings from the parser.
+Unquoted object keys are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
+They are passed on as normal strings from the parser.
 
 ## Trailing Comma
 
