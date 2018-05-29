@@ -1,6 +1,6 @@
 ; The JAXN grammar (https://github.com/stand-art/jaxn/)
 
-; Based on the JSON grammar, see RFC 7159.
+; Based on the JSON grammar, see RFC 8259.
 ; See RFC 5234 for interpretation and core rules.
 
 comment = c-line / c-block

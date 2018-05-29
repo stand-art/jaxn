@@ -103,7 +103,7 @@ A JAXN-compatible library is required to accept NaN and Infinity as valid numeri
 
 JAXN keeps the JSON string data model intact.
 String values in JSON are required to be valid Unicode strings in order to be interoperable.
-The JSON RFC 7159 explains in paragraph 8.2 why this is the case.
+The JSON RFC 8259 explains in paragraph 8.2 why this is the case.
 JAXN does *not* change this.
 Unlike some other libraries that allow escape sequences like `\xXX` for normal strings without specifying the semantics (properly), JAXN does not create ambiguity and confusion and does not require to store non-Unicode strings.
 
@@ -112,13 +112,13 @@ We might still need to add some details and clarifications here, but let's not g
 
 The sequence of represented Unicode code points is obtained from the sequence of representation code points by replacing escape sequences with the escaped code points (or, in the case of UTF-16 surrogates, temporary code units), and by merging the code units of subsequent high and low UTF-16 surrogates into a single code point.
 
-> (RFC 7159 specifies how to encode code points not in the BMP with a 12-character encoding consisting of two `\uXXXX` escape sequences using UTF-16 surrogate pairs, but does not mandate a specific behaviour when the merging of surrogates fails, noting only that it could be "unpredictable" including "fatal".)
+> (RFC 8259 specifies how to encode code points not in the BMP with a 12-character encoding consisting of two `\uXXXX` escape sequences using UTF-16 surrogate pairs, but does not mandate a specific behaviour when the merging of surrogates fails, noting only that it could be "unpredictable" including "fatal".)
 
 There appears to be an implicit silent consensus among JSON libraries to ignore unpaired surrogates.
 For now the JAXN standard allows unpaired surrogates.
 Therefore, at level 3, not all represented strings are actually valid sequences of unicode characters.
 (If the implementation uses UTF-8 as encoding, the final string encoding on level 4 can contain UTF-8 sequences for UTF-16 surrogates.)
-A JAXN implementation MAY choose to forbid unpaired surrogates, a behaviour compatible with RFC 7159.
+A JAXN implementation MAY choose to forbid unpaired surrogates, a behaviour compatible with RFC 8259.
 
 Merging of surrogate pairs, and the decision of whether a string contains unpaired surrogates, MUST be performed before concatentation of strings.
 
