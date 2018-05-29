@@ -119,7 +119,7 @@ time-offset       = "Z" / time-numoffset
 local-time        = time-hour ":" time-minute ":" time-second [ time-secfrac ]
 local-date        = date-fullyear "-" date-month "-" date-mday
 
-local-date-time   = local-date "T" local-time
+local-date-time   = local-date ( "T" / " " ) local-time
 offset-date-time  = local-date-time time-offset
 
 binary = b-value *( value-concat b-value )

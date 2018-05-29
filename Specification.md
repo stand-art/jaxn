@@ -193,7 +193,9 @@ Allows date, time, or timestamp values. Four types need to be distinguished:
 
 * `2017-09-05`
 * `10:23:54.345678`
+* `2017-09-05 10:23:54.345678`
 * `2017-09-05T10:23:54.345678`
+* `2017-09-05 10:23:54.345678+02:00`
 * `2017-09-05T10:23:54.345678+02:00`
 
 #### Grammar
@@ -216,16 +218,22 @@ time-offset       = "Z" / time-numoffset
 local-time        = time-hour ":" time-minute ":" time-second [ time-secfrac ]
 local-date        = date-fullyear "-" date-month "-" date-mday
 
-local-date-time   = local-date "T" local-time
+local-date-time   = local-date ( "T" / " " ) local-time
 offset-date-time  = local-date-time time-offset
 ```
 
 #### Notes
 
-The formats are described in [RFC 3339](https://tools.ietf.org/html/rfc3339), additional restrictions apply.
+The formats are described in [RFC 3339](https://tools.ietf.org/html/rfc3339).
+
 The represented date, time or timestamp must be valid, e.g. not `2000-02-30`.
-Leap second support is optional, an implementation may choose not to support leap-seconds.
-For interoperability, it is best *not* to use leap-seconds.
+
+Each type is a unique type and shall not be confused with the others.
+A round-trip must retain the type.
+
+Space is allowed as a separator between date and time.
+Two local date-time values are considered equal when both the date and the time part are equal, the separator is not part of the value.
+Round trips may replace the separator for another, using capital `T` is recommended.
 
 The precision of fractional seconds is implementation specific, but at least millisecond precision must be implemented.
 Nanosecond precision is recommended.
@@ -234,10 +242,10 @@ Round trips may truncate fractional second digits, or add trailing zeros if nece
 
 Two offset date-time values are considered equal when both the local date-time part as well as the offset are equal.
 The values `2000-01-01T00:02:00+00:00` and `2000-01-01T00:00:00+02:00` are *not* considered equal in JAXN.
-The offsets `+00:00`, `-00:00` and `Z` represent the same offset value, a round trip may interchange them.
+The offsets `+00:00`, `-00:00` and `Z` (and `z`) represent the same offset value, a round trip may interchange them.
 
-Each type is a unique type and shall not be confused with the others.
-A round-trip must retain the type.
+Leap second support is optional, an implementation may choose not to support leap-seconds.
+For interoperability, it is best *not* to use leap-seconds.
 
 ## Binary Data
 
