@@ -41,10 +41,10 @@ JAXN string representation extends the JSON string representation with the follo
 
 #### Strings
 
-* Allow single-quoted strings, e.g. `'This is a "single-quote" string. No really, it is!'`.
+* Add single-quoted strings, e.g. `'This is a "single-quote" string. No really, it is!'`.
 * Add new escape sequences `\'`, `\v`, `\0` and `\u{X...}`.
-* Allow concatenation of strings like `"Hello," + " world!"`.
-* TODO: Raw strings, i.e. strings that can span multiple lines without interpretation of escape sequences.
+* Add multiline strings with no escape sequences.
+* Add concatenation of strings like `"Hello," + " world!"`.
 
 #### Date / Time
 

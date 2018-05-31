@@ -74,7 +74,13 @@ zero = %x30                   ; 0
 
 string = string-part *( value-concat string-part )
 
-string-part = d-string / s-string
+string-part = m-d-string / m-s-string / d-string / s-string
+
+m-d-string = 3d-quote *( m-d-char ) 3d-quote
+m-s-string = 3s-quote *( m-s-char ) 3s-quote
+
+m-d-char = *2d-quote ( %x09 / %x0A / %x0D / %x20-21 / %x23-10FFFF )
+m-s-char = *2s-quote ( %x09 / %x0A / %x0D / %x20-26 / %x28-10FFFF )
 
 d-string = d-quote *( s-char / s-quote ) d-quote
 s-string = s-quote *( s-char / d-quote ) s-quote

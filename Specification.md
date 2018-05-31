@@ -127,7 +127,7 @@ All other extensions are a presentation detail and must not have any effect on t
 
 #### Synopsis
 
-Allow single-quoted strings, additional escape sequences, and string concatenation.
+Allow single-quoted strings, additional escape sequences, multiline strings, and string concatenation.
 
 #### Examples
 
@@ -141,7 +141,13 @@ Allow single-quoted strings, additional escape sequences, and string concatenati
 ```abnf
 string = string-part *( value-concat string-part )
 
-string-part = d-string / s-string
+string-part = m-d-string / m-s-string / d-string / s-string
+
+m-d-string = 3d-quote *( m-d-char ) 3d-quote
+m-s-string = 3s-quote *( m-s-char ) 3s-quote
+
+m-d-char = *2d-quote ( %x09 / %x0A / %x0D / %x20-21 / %x23-10FFFF )
+m-s-char = *2s-quote ( %x09 / %x0A / %x0D / %x20-26 / %x28-10FFFF )
 
 d-string = d-quote *( s-char / s-quote ) d-quote
 s-string = s-quote *( s-char / d-quote ) s-quote
@@ -175,14 +181,17 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 * Each string (in a concatenation: individually) **MUST** be a sequence of Unicode characters.
 * `\uXXXX` with UTF-16 surrogates **MUST** be handled before concatenation.
 * `\u{X...}` **MUST NOT** encode surrogates.
-* Concatenations can mix single- and double-quoted strings.
-* Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated. It happens before the final string is passed on from the parser.
+* Multiline strings do not contain escape sequences.
+* Concatenations can mix single- and double-quoted strings as well as single- or multiline-strings.
+* Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
+  It happens before the final string is passed on from the parser.
 
 ## Date / Time
 
 #### Synopsis
 
-Allows date, time, or timestamp values. Four types need to be distinguished:
+Allows date, time, or timestamp values.
+Four types need to be distinguished:
 
 * A date (without a time or an offset). In the context of JAXN, this is referred to as a "local date".
 * A time (without a date or an offset). In the context of JAXN, this is referred to as a "local time".
@@ -306,7 +315,8 @@ dot = %x2E                    ; .
 * No `\uXXXX` or `\u{...}` escape sequences allowed, instead:
 * Escape sequence `\xXX` for arbitrary byte values.
 * Concatenations can mix single- and double-quoted binary strings as well as hexdumped data.
-* Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated. It happens before the final binary value is passed on from the parser.
+* Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
+  It happens before the final binary value is passed on from the parser.
 
 ## Unquoted Object Keys
 
