@@ -135,6 +135,8 @@ Allow single-quoted strings, additional escape sequences, multiline strings, and
 * `'That\'s right, you need to escape single-quotes in a single-quoted string.'`
 * `'Oh, and \" is allowed even in a single-quote string.'`
 * `"\u{1D11E} was my first love " + "and it will be my last."`
+* `"""String with a \ and " characters - no escape sequences,
+  may contain line breaks"""`
 
 #### Grammar
 
@@ -181,7 +183,12 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
 * Each string (in a concatenation: individually) **MUST** be a sequence of Unicode characters.
 * `\uXXXX` with UTF-16 surrogates **MUST** be handled before concatenation.
 * `\u{X...}` **MUST NOT** encode surrogates.
-* Multiline strings do not contain escape sequences.
+* Multiline strings:
+  * Are surrounded by three quotation marks (single or double quote) on each side and allow newline.
+  * Are restricted to the source character set, horizontal tab is allowed.
+  * Do not interpret escape sequences, a backslash `\` is just a literal backslash.
+  * A newline immediately following the opening delimiter is trimmed.
+  * All other characters remain intact.
 * Concatenations can mix single- and double-quoted strings as well as single- or multiline-strings.
 * Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
   It happens before the final string is passed on from the parser.
