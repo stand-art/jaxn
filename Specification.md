@@ -135,8 +135,7 @@ Allow single-quoted strings, additional escape sequences, multiline strings, and
 * `'That\'s right, you need to escape single-quotes in a single-quoted string.'`
 * `'Oh, and \" is allowed even in a single-quote string.'`
 * `"\u{1D11E} was my first love " + "and it will be my last."`
-* `"""String with a \ and " characters - no escape sequences,
-  may contain line breaks"""`
+* `"""String with a \ and " characters - no escape sequences,`<br>`may contain line breaks"""`
 
 #### Grammar
 
