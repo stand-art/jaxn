@@ -2,6 +2,7 @@
 
 The following sections specify the syntax and semantics of the extensions that JAXN brings to JSON.
 
+* [Restrictions](#restrictions)
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
@@ -12,6 +13,14 @@ The following sections specify the syntax and semantics of the extensions that J
 
 Note: The grammar rules are an excerpt from the complete [JAXN grammar](jaxn.abnf).
 The JAXN grammar is based on the JSON grammar given in [RFC 8259](https://tools.ietf.org/html/rfc8259), both are in ABNF syntax, defined in [RFC 5234](https://tools.ietf.org/html/rfc5234).
+
+## Restrictions
+
+JAXN is more strict than JSON in the following points:
+
+* A document is considered valid when it validates against the JAXN grammar *and* when all additional restrictions are met.
+* Duplicate keys are not allowed, the behaviour is unspecified.
+* `%x7F` is a control character, it must not appear in its unescaped form.
 
 ## Comments
 
@@ -34,7 +43,8 @@ c-line = c-begin-line *( c-char )
 
 c-begin-line = %x23 / %x2F.2F ; # or //
 
-c-char = %x09 / %x20-10FFFF   ; Any HTAB or printable character
+c-char = %x09 / %x20-7E / %x80-10FFFF
+                              ; Any HTAB or printable character
 
 c-block = c-begin-block *( c-no-star / ( 1*c-star c-no-star-or-slash ) ) c-end-block
 
@@ -44,8 +54,8 @@ c-end-block = 1*c-star c-slash
 c-slash = %x2F                ; /
 c-star = %x2A                 ; *
 
-c-no-star = %x09 / %x0A / %x0D / %x20-29 / %x2B-10FFFF
-c-no-star-or-slash = %x09 / %x0A / %x0D / %x20-29 / %x2B-2E / %x30-10FFFF
+c-no-star = %x09 / %x0A / %x0D / %x20-29 / %x2B-7E / %x80-10FFFF
+c-no-star-or-slash = %x09 / %x0A / %x0D / %x20-29 / %x2B-2E / %x30-7E / %x80-10FFFF
 
 ws = *(
         %x20 /                ; Space
@@ -123,6 +133,10 @@ JAXN allows `+NaN` and `-NaN` as alternatives for `NaN`, as well as `+Infinity` 
 
 All other extensions are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
 
+A JAXN library may restrict the range of numbers.
+It must allow at least IEEE 754 double-precision floating point numbers.
+
+
 ## Strings
 
 #### Synopsis
@@ -147,8 +161,8 @@ string-part = m-d-string / m-s-string / d-string / s-string
 m-d-string = 3d-quote *( m-d-char ) 3d-quote
 m-s-string = 3s-quote *( m-s-char ) 3s-quote
 
-m-d-char = *2d-quote ( %x09 / %x0A / %x0D / %x20-21 / %x23-10FFFF )
-m-s-char = *2s-quote ( %x09 / %x0A / %x0D / %x20-26 / %x28-10FFFF )
+m-d-char = *2d-quote ( %x09 / %x0A / %x0D / %x20-21 / %x23-7E / %x80-10FFFF )
+m-s-char = *2s-quote ( %x09 / %x0A / %x0D / %x20-26 / %x28-7E / %x80-10FFFF )
 
 d-string = d-quote *( s-char / s-quote ) d-quote
 s-string = s-quote *( s-char / d-quote ) s-quote
@@ -174,7 +188,7 @@ escape = %x5C                 ; \
 d-quote = %x22                ; "
 s-quote = %x27                ; '
 
-unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-10FFFF
+unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-7E / %x80-10FFFF
 ```
 
 #### Notes
