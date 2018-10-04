@@ -12,7 +12,6 @@ JAXN extends the JSON data model with the following points:
 
 * Allows non-finite values `NaN`, `Infinity` and `-Infinity` for numbers.
 * Adds a new data type for binary data.
-* Adds new data types for date/time/timestamp.
 
 ## The JAXN String Representation
 
@@ -21,7 +20,6 @@ JAXN string representation extends the JSON string representation with the follo
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
-* [Date / Time](#date--time)
 * [Binary Data](#binary-data)
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
@@ -45,13 +43,6 @@ JAXN string representation extends the JSON string representation with the follo
 * Add new escape sequences `\'`, `\v`, `\0` and `\u{X...}`.
 * Add multiline strings with no escape sequences.
 * Add concatenation of strings like `"Hello," + " world!"`.
-
-#### Date / Time
-
-* Date: `2017-09-05`.
-* Time: `10:23:54.345678`.
-* Timestamp: `2017-09-05T10:23:54.345678`.
-* Timestamp with offset: `2017-09-05T10:23:54.345678+02:00`.
 
 #### Binary Data
 

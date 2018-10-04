@@ -10,7 +10,6 @@ The following sections discuss the syntax and semantics of the extensions that J
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
-* [Date / Time](#date--time)
 * [Binary Data](#binary-data)
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
@@ -23,11 +22,10 @@ They sometimes do extend the data model, but they don't say so clearly or are ev
 JAXN goes further, by clearly specifying which additional values and data types a library should support.
 This allows users to know what to expect from a JAXN-compatible library, or, looking at it from the other side, search for a JAXN-compatible library when they know that they need these extensions to the data model.
 
-JAXN extends the JSON data model in three places.
+JAXN extends the JSON data model in two places.
 
 1. Allow `NaN`, `Infinity` and `-Infinity` for numeric values.
 2. Add a binary data type.
-3. Add date/time/timestamp data types.
 
 ## Unicode
 
@@ -121,14 +119,6 @@ Therefore, at level 3, not all represented strings are actually valid sequences 
 A JAXN implementation MAY choose to forbid unpaired surrogates, a behaviour compatible with RFC 8259.
 
 Merging of surrogate pairs, and the decision of whether a string contains unpaired surrogates, MUST be performed before concatentation of strings.
-
-## Date / Time
-
-In real-world uses, dates, times and timestamps are often needed data types.
-Representing this kind of data as string requires users of a library to take care of validation and interpretation which is tedious and error-prone.
-As JAXN recognizes the importance of date and time values, we extend the data model of a JAXN-compatible library by explicit data types for time-related values.
-
-TODO: Add discussion of date / time / date-time values.
 
 ## Binary Data
 

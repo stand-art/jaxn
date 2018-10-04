@@ -6,7 +6,6 @@ The following sections specify the syntax and semantics of the extensions that J
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
-* [Date / Time](#date--time)
 * [Binary Data](#binary-data)
 * [Unquoted Object Keys](#unquoted-object-keys)
 * [Trailing Comma](#trailing-comma)
@@ -205,76 +204,6 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-7E / %x80-10FFFF
 * Concatenations can mix single- and double-quoted strings as well as single- or multiline-strings.
 * Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
   It happens before the final string is passed on from the parser.
-
-## Date / Time
-
-#### Synopsis
-
-Allows date, time, or timestamp values.
-Four types need to be distinguished:
-
-* A date (without a time or an offset). In the context of JAXN, this is referred to as a "local date".
-* A time (without a date or an offset). In the context of JAXN, this is referred to as a "local time".
-* A timestamp without an offset. In the context of JAXN, this is referred to as a "local date-time".
-* A timestamp with an offset. In the context of JAXN, this is referred to as an "offset date-time".
-
-#### Examples
-
-* `2017-09-05`
-* `10:23:54.345678`
-* `2017-09-05 10:23:54.345678`
-* `2017-09-05T10:23:54.345678`
-* `2017-09-05 10:23:54.345678+02:00`
-* `2017-09-05T10:23:54.345678+02:00`
-
-#### Grammar
-
-```abnf
-time-value = local-date / local-time / local-date-time / offset-date-time
-
-date-fullyear     = 4DIGIT
-date-month        = 2DIGIT    ; 01-12
-date-mday         = 2DIGIT    ; 01-28, 01-29, 01-30, 01-31 based on month/year
-
-time-hour         = 2DIGIT    ; 00-23
-time-minute       = 2DIGIT    ; 00-59
-time-second       = 2DIGIT    ; 00-58, 00-59, 00-60 based on leap second rules
-time-secfrac      = decimal-point 1*DIGIT
-
-time-numoffset    = ( plus / minus ) time-hour ":" time-minute
-time-offset       = "Z" / time-numoffset
-
-local-time        = time-hour ":" time-minute ":" time-second [ time-secfrac ]
-local-date        = date-fullyear "-" date-month "-" date-mday
-
-local-date-time   = local-date ( "T" / " " ) local-time
-offset-date-time  = local-date-time time-offset
-```
-
-#### Notes
-
-The formats are described in [RFC 3339](https://tools.ietf.org/html/rfc3339).
-
-The represented date, time or timestamp must be valid, e.g. not `2000-02-30`.
-
-Each type is a unique type and shall not be confused with the others.
-A round-trip must retain the type.
-
-Space is allowed as a separator between date and time.
-Two local date-time values are considered equal when both the date and the time part are equal, the separator is not part of the value.
-Round trips may replace the separator for another, using capital `T` is recommended.
-
-The precision of fractional seconds is implementation specific, but at least millisecond precision must be implemented.
-Nanosecond precision is recommended.
-If the value contains greater precision than the implementation can support, the additional fractional second digits must be truncated, not rounded.
-Round trips may truncate fractional second digits, or add trailing zeros if necessary.
-
-Two offset date-time values are considered equal when both the local date-time part as well as the offset are equal.
-The values `2000-01-01T00:02:00+00:00` and `2000-01-01T00:00:00+02:00` are *not* considered equal in JAXN.
-The offsets `+00:00`, `-00:00` and `Z` (and `z`) represent the same offset value, a round trip may interchange them.
-
-Leap second support is optional, an implementation may choose not to support leap-seconds.
-For interoperability, it is best *not* to use leap-seconds.
 
 ## Binary Data
 
