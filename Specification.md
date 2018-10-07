@@ -1,31 +1,33 @@
 # Specification
 
-The following sections specify the syntax and semantics of the extensions that JAXN brings to JSON.
+This document is the normative specification of JAXN.
+
+JAXN is a data representation and interchange format based on JSON.
+
+Only the differences between JAXN and JSON are specified.
+
+JSON is to be understood as the version defined in [RFC 8259](https://tools.ietf.org/html/rfc8259).
 
 * [Restrictions](#restrictions)
 * [Comments](#comments)
 * [Numbers](#numbers)
 * [Strings](#strings)
 * [Binary Data](#binary-data)
-* [Unquoted Object Keys](#unquoted-object-keys)
+* [Unquoted Names in Objects](#unquoted-names-in-objects)
 * [Trailing Comma](#trailing-comma)
 
-Note: The grammar rules are an excerpt from the complete [JAXN grammar](jaxn.abnf).
-The JAXN grammar is based on the JSON grammar given in [RFC 8259](https://tools.ietf.org/html/rfc8259), both are in ABNF syntax, defined in [RFC 5234](https://tools.ietf.org/html/rfc5234).
+Note: The grammar rules given below are excerpts from the complete [JAXN grammar](jaxn.abnf).
+The JAXN grammar is based on the JSON grammar, and both are in ABNF syntax as defined in [RFC 5234](https://tools.ietf.org/html/rfc5234).
 
 ## Restrictions
 
-JAXN is more strict than JSON in the following points:
+JAXN is mostly a superset of JSON in that every JSON text is a JAXN text that represents the same value, however the following points restrict which JSON texts are also JAXN:
 
 * A document is considered valid when it validates against the JAXN grammar *and* when all additional restrictions are met.
-* Duplicate keys are not allowed, the behaviour is unspecified.
-* `%x7F` is a control character, it must not appear in its unescaped form.
+* Duplicate names are not allowed in objects; the behaviour in the presence of duplicate names is implementation defined.
+* The ASCII control character `%x7F` MUST NOT appear in a JAXN text (it may be part of a string or binary value when quoted appropriately).
 
 ## Comments
-
-#### Synopsis
-
-Allows single-line and block comments.
 
 #### Examples
 
@@ -66,7 +68,7 @@ ws = *(
 
 #### Semantics
 
-Comments are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
+Comments change the representation of data but have no effect on which data is represented. 
 
 #### Notes
 
@@ -128,13 +130,12 @@ zero = %x30                   ; 0
 
 JAXN adds non-finite values to the data model that can not be represented in JSON.
 The spelling of the identifiers is case-sensitive.
-JAXN allows `+NaN` and `-NaN` as alternatives for `NaN`, as well as `+Infinity` as an alternative to `Infinity`.
+JAXN allows `+NaN` and `-NaN` as alternatives for `NaN`, as well as `+Infinity` as an alternative for `Infinity`.
 
 All other extensions are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
 
-A JAXN library may restrict the range of numbers.
+The permissible magnitude and precision of numbers is implementation defined.
 It must allow at least IEEE 754 double-precision floating point numbers.
-
 
 ## Strings
 
@@ -194,10 +195,11 @@ unescaped = %x20-21 / %x23-26 / %x28-5B / %x5D-7E / %x80-10FFFF
 
 * Each string (in a concatenation: individually) **MUST** be a sequence of Unicode characters.
 * `\uXXXX` with UTF-16 surrogates **MUST** be handled before concatenation.
-* `\u{X...}` **MUST NOT** encode surrogates.
+* Unpaired UTF-16 surrogates **MUST NOT** appear in the string representation.
+* `\u{X...}` **MUST NOT** encode surrogates (i.e. the represented string is not allowed to contain UTF-16 surrogates).
 * Multiline strings:
   * Are surrounded by three quotation marks (single or double quote) on each side and allow newline.
-  * Are restricted to the source character set, horizontal tab is allowed.
+  * Can contain any sequence of non-control characters except for three matching closing quotation marks.
   * Do not interpret escape sequences, a backslash `\` is just a literal backslash.
   * A newline immediately following the opening delimiter is trimmed.
   * All other characters remain intact.
@@ -259,19 +261,19 @@ dot = %x2E                    ; .
 
 #### Notes
 
-* Binary data represents arbitrary byte sequences, not Unicode strings.
-* In binary strings only printable ASCII characters are allowed, no control characters.
+* Binary data represents arbitrary byte sequences (not Unicode strings).
+* Binary strings allow only "printable" ASCII characters, no control characters.
 * No `\uXXXX` or `\u{...}` escape sequences allowed, instead:
 * Escape sequence `\xXX` for arbitrary byte values.
 * Concatenations can mix single- and double-quoted binary strings as well as hexdumped data.
 * Concatenation is a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
   It happens before the final binary value is passed on from the parser.
 
-## Unquoted Object Keys
+## Unquoted Names in Objects
 
 #### Synopsis
 
-Allow identifiers as unquoted object keys.
+Allow identifiers as unquoted names in objects.
 
 #### Example
 
@@ -292,11 +294,10 @@ i-continue = i-begin / DIGIT
 
 #### Notes
 
-Object keys are strings, wherefore the tokens `true`, `null`, and `false` are unambiguous shortcuts for `"true"`, `"null"`, and `"false"` when used in an object key position.
-Strings in object key positions can use the extended syntax for strings including the single-quoted variant, additional escape sequences and string concatenation, however unquoted object keys can **not** be concatenated.
+Names in objects are strings; the tokens `true`, `null`, and `false` are unambiguous shortcuts for `"true"`, `"null"`, and `"false"` when used within an object where a name is expected.
+Strings in their role as names in objects can use the extended syntax for strings including the single-quoted variant, additional escape sequences, and string concatenation, however unquoted names in objects can **not** be concatenated.
 
-Unquoted object keys are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated.
-They are passed on as normal strings from the parser.
+Unquoted names in objects are a presentation detail and must not have any effect on the serialization tree, representation graph or events generated, i.e. they are passed on as normal strings from the parser.
 
 ## Trailing Comma
 
