@@ -1,6 +1,6 @@
 # Welcome to JAXN
 
-JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://tools.ietf.org/html/rfc8259) with a few often-required additions to the data model and with new syntax that makes it more usable for humans.
+JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://tools.ietf.org/html/rfc8259) with a few often-required additions to the data model, and with new syntax that makes it more human friendly.
 
 > :exclamation: **JAXN IS CURRENTLY WORK-IN-PROGRESS** :exclamation:
 >
@@ -11,11 +11,11 @@ JAXN (pronounced "Jackson") is a standard that carefully extends [JSON](https://
 JAXN extends the JSON data model with the following points:
 
 * Allows non-finite values `NaN`, `Infinity` and `-Infinity` for numbers.
-* Adds a new data type for binary data.
+* Adds a new primitive type for values representing binary data.
 
-## The JAXN String Representation
+## The JAXN Text Representation
 
-JAXN string representation extends the JSON string representation with the following points:
+JAXN text representation extends the JSON text representation with the following points:
 
 * [Comments](#comments)
 * [Numbers](#numbers)
@@ -42,7 +42,7 @@ JAXN string representation extends the JSON string representation with the follo
 * Add single-quoted strings, e.g. `'This is a "single-quote" string. No really, it is!'`.
 * Add new escape sequences `\'`, `\v`, `\0` and `\u{X...}`.
 * Add multiline strings with no escape sequences.
-* Add concatenation of strings like `"Hello," + " world!"`.
+* Add concatenation of strings, e.g. `"Hello," + " world!"`.
 
 #### Binary Data
 
