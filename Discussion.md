@@ -55,9 +55,10 @@ This is necessary to report sensible position information in case of parse error
 
 ## Source Character Set
 
-The source character set (i.e., the Unicode code points that may be contained in the input data) consists of HTAB (0x09), the end-of-line characters (0x0A, 0x0D), and all code points from space upwards (0x20-0x10FFFF).
+The source character set (i.e., the Unicode code points that may be contained in the input data) consists of HTAB (0x09), the end-of-line characters (0x0A, 0x0D), and all code points from space except for the delete character (0x20-0x7E, 0x80-0x10FFFF).
+
 JSON allows 0x7F, although it is a control character.
-JAXN stays compatible with JSON, so it has to allow it as well.
+We consider this to be an error and JAXN does not allow 0x7F.
 
 If a JAXN parsers encounters a code point outside of the source character set, it must report an error.
 
