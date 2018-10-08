@@ -46,7 +46,7 @@ JAXN text representation extends the JSON text representation with the following
 
 #### Binary Data
 
-* Binary data represents arbitrary byte sequences, not Unicode strings.
+* New primitive type that can represent arbitrary byte sequences.
 * Two syntactical variants that can be concatenated with each other.
 * Hexdumped binary, e.g. `$48656c6c6f2c20776f726c6421`.
   * Allows optional dots, e.g. `$48.65.6c.6c.6f.2c.20.77.6f.72.6c.64.21`.
