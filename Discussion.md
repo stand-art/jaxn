@@ -29,21 +29,22 @@ JAXN extends the JSON data model in two places.
 
 ## Unicode
 
-JAXN does not require additional Unicode support beyond what is already required by JSON itself.
-Some other libraries require additional Unicode support to implement certain extensions.
-While this seems reasonable if you are working with a programming language or environment where Unicode support is available, it places an additional burden on others, e.g. in the embedded world.
+JAXN does not require Unicode support beyond what is required by JSON.
 
 A JAXN parser parses a sequence of bytes, the input data. The parser is...
 
-* ...required to accept (correctly encoded) UTF-8 input data, this is the only interoperable representation.
+* ...required to accept (correctly encoded) UTF-8 input data.
+  * This is the recommended and only interoperable representation.
 * ...allowed to accept (correctly encoded) UTF-16 or UTF-32 input data.
-* ...allowed to accept a byte order marker (BOM) at the begin of the input data.
+* ...allowed to accept a byte order marker (BOM) at the beginning of the input data.
+  * This is only for UTF-16 or UTF-32, or other endian-dependent encodings.
 * ...allowed to accept other encodings, provided that they are correctly identified (no guessing!) and unambiguously mapped to a sequence of Unicode code points.
-* ...required to emit an error if it encounters an (encoding) error in the input data.
+* ...required to signal an error if it encounters an (encoding) error in the input data.
 
 ## White-Space
 
-JAXN does not allow additional white-space characters.
+JAXN does not allow white-space characters beyond those defined by JSON.
+
 Some other libraries allow additional white-space characters, but we do not see a real-world use-case for those.
 We believe users often add them by mistake and this is not a good-enough reason for us to allow them.
 
@@ -55,16 +56,16 @@ This is necessary to report sensible position information in case of parse error
 
 ## Source Character Set
 
-The source character set (i.e., the Unicode code points that may be contained in the input data) consists of HTAB (0x09), the end-of-line characters (0x0A, 0x0D), and all code points from space except for the delete character (0x20-0x7E, 0x80-0x10FFFF).
+The source character set (i.e., the Unicode code points that may be contained in the input data) consists of HTAB (0x09), the end-of-line characters (0x0A, 0x0D), and all code points starting with space (0x20), except for `delete` (0x7F), i.e. (0x20-0x7E, 0x80-0x10FFFF).
 
-JSON allows 0x7F, although it is a control character.
-We consider this to be an error and JAXN does not allow 0x7F.
+JSON allows 0x7F although it is a control character (and all other control characters are explicitly excluded).
+We consider this a mistake in the JSON specification, and do not allow 0x7F in JAXN.
 
 If a JAXN parsers encounters a code point outside of the source character set, it must report an error.
 
 JAXN does not *require* any non-ASCII characters in the input data.
 All Unicode code points in the string values in the data model can be written in an escaped form in the input data.
-JAXN documents can therefore, like JSON documents, be restricted to ASCII without loosing expressiveness.
+JAXN documents can therefore, like JSON documents, be restricted to ASCII without losing expressiveness.
 
 ## Comments
 
@@ -106,18 +107,13 @@ The JSON RFC 8259 explains in paragraph 8.2 why this is the case.
 JAXN does *not* change this.
 Unlike some other libraries that allow escape sequences like `\xXX` for normal strings without specifying the semantics (properly), JAXN does not create ambiguity and confusion and does not require to store non-Unicode strings.
 
-(I cleaned up this section a bit, as parts are moved to the above "Unicode" section.
-We might still need to add some details and clarifications here, but let's not get overboard...)
-
 The sequence of represented Unicode code points is obtained from the sequence of representation code points by replacing escape sequences with the escaped code points (or, in the case of UTF-16 surrogates, temporary code units), and by merging the code units of subsequent high and low UTF-16 surrogates into a single code point.
 
 > (RFC 8259 specifies how to encode code points not in the BMP with a 12-character encoding consisting of two `\uXXXX` escape sequences using UTF-16 surrogate pairs, but does not mandate a specific behaviour when the merging of surrogates fails, noting only that it could be "unpredictable" including "fatal".)
 
-There appears to be an implicit silent consensus among JSON libraries to ignore unpaired surrogates.
-For now the JAXN standard allows unpaired surrogates.
-Therefore, at level 3, not all represented strings are actually valid sequences of unicode characters.
-(If the implementation uses UTF-8 as encoding, the final string encoding on level 4 can contain UTF-8 sequences for UTF-16 surrogates.)
-A JAXN implementation MAY choose to forbid unpaired surrogates, a behaviour compatible with RFC 8259.
+JAXN only allows complete UTF-16 surrogate pairs which are allowed to occur as escape sequences in strings.
+When the input character set is UTF-16, complete surrogate pairs are also allowed (unescpaed) anywhere in the input, however escaped and unescaped surrogate pairs can not be mixed-and-matched in strings.
+Other occurrences of surrogate pairs are not allowed.
 
 Merging of surrogate pairs, and the decision of whether a string contains unpaired surrogates, MUST be performed before concatentation of strings.
 
