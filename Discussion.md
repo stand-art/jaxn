@@ -112,8 +112,8 @@ The sequence of represented Unicode code points is obtained from the sequence of
 > (RFC 8259 specifies how to encode code points not in the BMP with a 12-character encoding consisting of two `\uXXXX` escape sequences using UTF-16 surrogate pairs, but does not mandate a specific behaviour when the merging of surrogates fails, noting only that it could be "unpredictable" including "fatal".)
 
 JAXN only allows complete UTF-16 surrogate pairs which are allowed to occur as escape sequences in strings.
-When the input character set is UTF-16, complete surrogate pairs are also allowed (unescpaed) anywhere in the input, however escaped and unescaped surrogate pairs can not be mixed-and-matched in strings.
-Other occurrences of surrogate pairs are not allowed.
+When the input character set is UTF-16, complete surrogate pairs are also allowed (unescaped) anywhere in the input, however escaped and unescaped surrogates can not be paired to form a surrogate pair.
+Other occurrences of surrogates are not allowed.
 
 Merging of surrogate pairs, and the decision of whether a string contains unpaired surrogates, MUST be performed before concatentation of strings.
 
