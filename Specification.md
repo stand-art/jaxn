@@ -47,7 +47,9 @@ c-begin-line = %x23 / %x2F.2F ; # or //
 c-char = %x09 / %x20-7E / %x80-10FFFF
                               ; Any HTAB or printable character
 
-c-block = c-begin-block *( c-no-star / ( 1*c-star c-no-star-or-slash ) ) c-end-block
+c-block = c-begin-block
+          *( c-no-star / ( 1*c-star c-no-star-or-slash ) )
+          c-end-block
 
 c-begin-block = c-slash c-star
 c-end-block = 1*c-star c-slash
@@ -55,20 +57,22 @@ c-end-block = 1*c-star c-slash
 c-slash = %x2F                ; /
 c-star = %x2A                 ; *
 
-c-no-star = %x09 / %x0A / %x0D / %x20-29 / %x2B-7E / %x80-10FFFF
-c-no-star-or-slash = %x09 / %x0A / %x0D / %x20-29 / %x2B-2E / %x30-7E / %x80-10FFFF
+c-no-star = %x09 / %x0A / %x0D /
+            %x20-29 / %x2B-7E / %x80-10FFFF
 
-ws = *(
-        %x20 /                ; Space
+c-no-star-or-slash = %x09 / %x0A / %x0D /
+                     %x20-29 / %x2B-2E / %x30-7E / %x80-10FFFF
+
+ws = *( %x20 /                ; Space
         %x09 /                ; Horizontal tab
         %x0A /                ; Line feed or New line
         %x0D /                ; Carriage return
-	comment )             ; Comment
+        comment )             ; Comment
 ```
 
 #### Semantics
 
-Comments change the representation of data but have no effect on which data is represented. 
+Comments change the representation of data but have no effect on which data is represented.
 
 #### Notes
 
@@ -315,9 +319,13 @@ Allow trailing commas in arrays and objects.
 ```abnf
 value-sep-opt = [ value-separator ]
 
-array = begin-array [ value *( value-separator value ) value-sep-opt ] end-array
+array = begin-array
+        [ value *( value-separator value ) value-sep-opt ]
+        end-array
 
-object = begin-object [ member *( value-separator member ) value-sep-opt ] end-object
+object = begin-object
+         [ member *( value-separator member ) value-sep-opt ]
+         end-object
 ```
 
 #### Semantics
